@@ -10,9 +10,9 @@ export default function DatenschutzPage() {
       <p className="kicker">Rechtliches</p>
       <h1>Datenschutz</h1>
       <p>
-        Verantwortliche Stelle: <span className="placeholder">[Platzhalter]</span>
+        Verantwortliche Stelle: Bernhard Stieger, Staatsstrasse 11, 9463 Oberriet, Schweiz
         <br />
-        Kontakt: <span className="placeholder">[Platzhalter]</span>
+        Kontakt: Bernhard Stieger, Staatsstrasse 11, 9463 Oberriet, Schweiz
       </p>
       <h2>Was gespeichert wird — und was nicht</h2>
       <ul>
@@ -38,14 +38,14 @@ export default function DatenschutzPage() {
       </ul>
       <h2>Hosting</h2>
       <p>
-        Beim Aufruf der Website verarbeitet der Hoster übliche Verbindungsdaten (IP-Adresse,
-        Zeitpunkt, User-Agent). Einzelheiten: <span className="placeholder">[Platzhalter]</span>
+        Die Website wird bei Vercel gehostet. Beim Aufruf verarbeitet Vercel übliche
+        Verbindungsdaten (IP-Adresse, Zeitpunkt, User-Agent).
       </p>
       <h2>Rechte</h2>
       <p>
         Soweit die DSGVO oder das nDSG / DSG (CH) Anwendung findet: Auskunft, Berichtigung,
         Löschung, Einschränkung, Widerspruch, Datenübertragbarkeit, Beschwerde bei einer
-        Aufsichtsbehörde. Kontakt: <span className="placeholder">[Platzhalter]</span>
+        Aufsichtsbehörde. Kontakt: Bernhard Stieger, Staatsstrasse 11, 9463 Oberriet, Schweiz
       </p>
       <p className="muted">
         Entwurf im Browser löschen: auf der Seite „Erstellen“ den Knopf „Entwurf löschen“

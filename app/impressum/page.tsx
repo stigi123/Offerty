@@ -10,27 +10,17 @@ export default function ImpressumPage() {
       <p className="kicker">Rechtliches</p>
       <h1>Impressum</h1>
       <p>
-        Angaben gemäß § 5 TMG (DE) bzw. entsprechenden Pflichten in CH/AT. Die folgenden
-        Felder sind absichtlich nicht mit erfundenen Personendaten gefüllt.
+        Angaben gemäß § 5 TMG (DE) bzw. entsprechenden Pflichten in CH/AT.
       </p>
       <p>
-        Diensteanbieter: <span className="placeholder">[Platzhalter]</span>
+        Diensteanbieter: Bernhard Stieger
         <br />
-        Anschrift: <span className="placeholder">[Platzhalter]</span>
-        <br />
-        E-Mail: <span className="placeholder">[Platzhalter]</span>
-        <br />
-        Telefon: <span className="placeholder">[Platzhalter]</span>
+        Anschrift: Staatsstrasse 11, 9463 Oberriet, Schweiz
       </p>
       <p>
-        Vertretungsberechtigt: <span className="placeholder">[Platzhalter]</span>
+        Vertretungsberechtigt: Bernhard Stieger
         <br />
-        USt-IdNr.: <span className="placeholder">[Platzhalter]</span>
-        <br />
-        Handelsregister: <span className="placeholder">[Platzhalter]</span>
-      </p>
-      <p>
-        Verantwortlich für den Inhalt: <span className="placeholder">[Platzhalter]</span>
+        Verantwortlich für den Inhalt: Bernhard Stieger
       </p>
       <p className="muted">
         Offertly ist ein Angebot-/Offertengenerator. PDFs werden im Browser erzeugt. Eine
