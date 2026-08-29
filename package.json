@@ -1,0 +1,27 @@
+{
+  "name": "offerty",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Offertly — deutsche Angebote und Offerten als A4-PDF für Freelancer in DE, CH und AT.",
+  "scripts": {
+    "dev": "next dev --turbopack",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint"
+  },
+  "dependencies": {
+    "@react-pdf/renderer": "^4.3.1",
+    "next": "15.5.24",
+    "react": "19.1.2",
+    "react-dom": "19.1.2"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "^3",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "eslint": "^9",
+    "eslint-config-next": "15.5.24",
+    "typescript": "^5"
+  }
+}
