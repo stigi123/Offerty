@@ -1,11 +1,11 @@
-import { emptyQuote, newId } from "./format";
-import type { CountryCode, Currency, Quote, VatRate } from "./types";
+import { emptyLineItem, emptyQuote, newId } from "./format";
+import type { CountryCode, Currency, LineItem, Quote } from "./types";
+import { clampPercent } from "./vat";
 
 export const DRAFT_KEY = "offertly.draft.v1";
 
 const COUNTRIES: CountryCode[] = ["DE", "CH", "AT"];
 const CURRENCIES: Currency[] = ["EUR", "CHF"];
-const VAT_RATES: VatRate[] = [0, 7.7, 19];
 
 function asString(value: unknown, fallback = ""): string {
   return typeof value === "string" ? value : fallback;
@@ -18,6 +18,18 @@ function asNumber(value: unknown, fallback = 0): number {
 
 function asCountry(value: unknown, fallback: CountryCode): CountryCode {
   return COUNTRIES.includes(value as CountryCode) ? (value as CountryCode) : fallback;
+}
+
+function asVatNumber(value: unknown, fallback: number): number {
+  const n = asNumber(value, fallback);
+  return clampPercent(n);
+}
+
+function asOptionalVat(value: unknown): number | null {
+  if (value === null || value === undefined || value === "") return null;
+  const n = typeof value === "number" ? value : Number(value);
+  if (!Number.isFinite(n)) return null;
+  return clampPercent(n);
 }
 
 function asParty(value: unknown, fallbackCountry: CountryCode) {
@@ -34,6 +46,20 @@ function asParty(value: unknown, fallbackCountry: CountryCode) {
   };
 }
 
+function asItem(value: unknown): LineItem {
+  const row = value && typeof value === "object" ? (value as Record<string, unknown>) : {};
+  const base = emptyLineItem();
+  return {
+    id: asString(row.id, newId()),
+    description: asString(row.description),
+    quantity: asNumber(row.quantity, 1),
+    unit: asString(row.unit, base.unit),
+    unitPrice: asNumber(row.unitPrice, 0),
+    vatRate: asOptionalVat(row.vatRate),
+    discountPercent: clampPercent(asNumber(row.discountPercent, 0)),
+  };
+}
+
 export function parseQuote(value: unknown): Quote {
   const base = emptyQuote();
   if (!value || typeof value !== "object") return base;
@@ -41,30 +67,16 @@ export function parseQuote(value: unknown): Quote {
   const currency = CURRENCIES.includes(raw.currency as Currency)
     ? (raw.currency as Currency)
     : base.currency;
-  const vatRate = VAT_RATES.includes(raw.vatRate as VatRate)
-    ? (raw.vatRate as VatRate)
-    : base.vatRate;
   const itemsRaw = Array.isArray(raw.items) ? raw.items : [];
-  const items =
-    itemsRaw.length > 0
-      ? itemsRaw.map((item) => {
-          const row = item && typeof item === "object" ? (item as Record<string, unknown>) : {};
-          return {
-            id: asString(row.id, newId()),
-            description: asString(row.description),
-            quantity: asNumber(row.quantity, 1),
-            unit: asString(row.unit, "Std."),
-            unitPrice: asNumber(row.unitPrice, 0),
-          };
-        })
-      : base.items;
+  const items = itemsRaw.length > 0 ? itemsRaw.map(asItem) : base.items;
 
   return {
     number: asString(raw.number, base.number),
     date: asString(raw.date, base.date),
     validUntil: asString(raw.validUntil, base.validUntil),
     currency,
-    vatRate,
+    vatRate: asVatNumber(raw.vatRate, base.vatRate),
+    documentDiscountPercent: clampPercent(asNumber(raw.documentDiscountPercent, 0)),
     sender: asParty(raw.sender, "DE"),
     client: asParty(raw.client, "DE"),
     items,

@@ -6,14 +6,14 @@ Das GitHub-Repository heißt weiterhin **Offerty**. Das Produkt heißt **Offertl
 
 ## Funktionen
 
-- Formular unter `/erstellen`: Absender, Auftraggeber, Positionen, EUR/CHF, MwSt. 0 / 7,7 / 19 %, Gültig-bis, Hinweise, optionales Logo
+- Formular unter `/erstellen`: Absender, Auftraggeber, nummerierte Positionen mit Einheit, EUR/CHF, frei wählbare MwSt. (Vorgaben DE/CH/AT, CH-Standard 8,1 %), Positions- und Dokumentrabatt, Gültig-bis, Hinweise, optionales Logo, Angebotsnummer
 - Entwurf in `localStorage`, Knopf **Beispieldaten**
 - PDF im **Browser** mit [`@react-pdf/renderer`](https://react-pdf.org/) (A4)
 - Kostenlose PDFs mit Wasserzeichen **Offertly — Demo**
 - Freischaltung **9 € / 30 Tage** unter `/entsperren` (Krypto-Anweisung, Empfangsadresse aus `WALLET_ADDRESS`)
 - v1 akzeptiert jeden **nicht-leeren Transaktionshash** (keine On-Chain-Prüfung)
 - Ist `WALLET_ADDRESS` leer, erscheint ein **klar als Fake gekennzeichneter Platzhalter**
-- `/impressum` und `/datenschutz` nur mit `[Platzhalter]` — keine erfundenen Personendaten
+- `/impressum` und `/datenschutz` mit den hinterlegten Betreiberangaben — keine erfundenen E-Mails oder USt-IdNr.
 
 ## Entwicklung
 
@@ -46,4 +46,4 @@ Next.js App Router, TypeScript, React 19, CSS (Papier / Kiefer / Messing — kei
 
 ## Rechtliches
 
-Impressum und Datenschutzerklärung enthalten absichtlich nur `[Platzhalter]`. Vor einem öffentlichen Betrieb echte Angaben einsetzen.
+Impressum und Datenschutzerklärung enthalten nur die vom Betreiber mitgeteilten Angaben. Fehlende Werte (E-Mail, Telefon, USt-IdNr.) werden weggelassen.

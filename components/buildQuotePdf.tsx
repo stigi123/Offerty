@@ -10,16 +10,17 @@ import {
   View,
   pdf,
 } from "@react-pdf/renderer";
-import type { Quote, VatRate } from "@/lib/types";
+import type { Quote } from "@/lib/types";
 import {
   COUNTRY_LABEL,
   documentTitle,
   formatDate,
   formatMoney,
-  lineAmount,
+  formatQuantity,
   partyLine,
-  quoteTotals,
 } from "@/lib/format";
+import { quoteTotals } from "@/lib/totals";
+import { formatVatRate } from "@/lib/vat";
 
 let fontsReady = false;
 
@@ -35,12 +36,6 @@ function ensureFonts() {
     ],
   });
   fontsReady = true;
-}
-
-function vatShort(rate: VatRate): string {
-  if (rate === 7.7) return "7,7 %";
-  if (rate === 19) return "19 %";
-  return "0 %";
 }
 
 const styles = StyleSheet.create({
@@ -149,8 +144,8 @@ const styles = StyleSheet.create({
     marginTop: 12,
   },
   th: {
-    fontSize: 7.5,
-    letterSpacing: 1.1,
+    fontSize: 7,
+    letterSpacing: 0.8,
     textTransform: "uppercase",
     color: "#6b5a38",
   },
@@ -160,16 +155,22 @@ const styles = StyleSheet.create({
     borderBottomWidth: 0.4,
     borderBottomColor: "#d9ccb0",
   },
-  colPos: { width: "8%" },
-  colDesc: { width: "42%" },
-  colQty: { width: "12%", textAlign: "right" },
-  colUnit: { width: "12%", textAlign: "right" },
+  colPos: { width: "9%" },
+  colDesc: { width: "33%" },
+  colQty: { width: "9%", textAlign: "right" },
+  colUnit: { width: "11%", textAlign: "right" },
   colPrice: { width: "13%", textAlign: "right" },
-  colTotal: { width: "13%", textAlign: "right" },
+  colVat: { width: "10%", textAlign: "right" },
+  colTotal: { width: "15%", textAlign: "right" },
+  note: {
+    fontSize: 8,
+    color: "#6b5a38",
+    marginTop: 2,
+  },
   totals: {
     marginTop: 14,
     alignSelf: "flex-end",
-    width: 250,
+    width: 270,
   },
   totalRow: {
     flexDirection: "row",
@@ -226,9 +227,9 @@ function QuotePdfDocument({ quote, watermark }: { quote: Quote; watermark: boole
 
   return (
     <Document
-      title={`${kind} ${quote.number}`}
+      title={`${kind} ${quote.number}`.trim()}
       author={quote.sender.name || "Offertly"}
-      subject={`${kind} ${quote.number}`}
+      subject={`${kind} ${quote.number}`.trim()}
       creator="Offertly"
       language="de"
     >
@@ -249,7 +250,9 @@ function QuotePdfDocument({ quote, watermark }: { quote: Quote; watermark: boole
           <View style={styles.brandBlock}>
             <Text style={styles.kicker}>Offertly · DE · CH · AT</Text>
             <Text style={styles.title}>{kind.toUpperCase()}</Text>
-            <Text style={styles.number}>Nr. {quote.number}</Text>
+            {quote.number.trim() ? (
+              <Text style={styles.number}>Nr. {quote.number.trim()}</Text>
+            ) : null}
           </View>
         </View>
 
@@ -295,31 +298,61 @@ function QuotePdfDocument({ quote, watermark }: { quote: Quote; watermark: boole
           <Text style={[styles.th, styles.colQty]}>Menge</Text>
           <Text style={[styles.th, styles.colUnit]}>Einheit</Text>
           <Text style={[styles.th, styles.colPrice]}>Einzelpreis</Text>
+          <Text style={[styles.th, styles.colVat]}>MwSt.</Text>
           <Text style={[styles.th, styles.colTotal]}>Betrag</Text>
         </View>
 
-        {quote.items.map((item, index) => (
-          <View style={styles.row} key={item.id} wrap={false}>
-            <Text style={styles.colPos}>{String(index + 1).padStart(2, "0")}</Text>
-            <Text style={styles.colDesc}>{item.description || "—"}</Text>
-            <Text style={styles.colQty}>{String(item.quantity).replace(".", ",")}</Text>
-            <Text style={styles.colUnit}>{item.unit || "—"}</Text>
-            <Text style={styles.colPrice}>{formatMoney(item.unitPrice, quote.currency)}</Text>
-            <Text style={styles.colTotal}>
-              {formatMoney(lineAmount(item.quantity, item.unitPrice), quote.currency)}
-            </Text>
-          </View>
-        ))}
+        {quote.items.map((item, index) => {
+          const line = totals.lines[index];
+          return (
+            <View style={styles.row} key={item.id} wrap={false}>
+              <Text style={styles.colPos}>{`Pos. ${index + 1}`}</Text>
+              <View style={styles.colDesc}>
+                <Text>{item.description || "—"}</Text>
+                {item.discountPercent > 0 ? (
+                  <Text style={styles.note}>
+                    {`Rabatt ${formatVatRate(item.discountPercent)} (−${formatMoney(line?.lineDiscount ?? 0, quote.currency)})`}
+                  </Text>
+                ) : null}
+              </View>
+              <Text style={styles.colQty}>{formatQuantity(item.quantity)}</Text>
+              <Text style={styles.colUnit}>{item.unit || "—"}</Text>
+              <Text style={styles.colPrice}>{formatMoney(item.unitPrice, quote.currency)}</Text>
+              <Text style={styles.colVat}>{formatVatRate(line?.vatRate ?? quote.vatRate)}</Text>
+              <Text style={styles.colTotal}>
+                {formatMoney(line?.afterLineDiscount ?? 0, quote.currency)}
+              </Text>
+            </View>
+          );
+        })}
 
         <View style={styles.totals}>
+          {totals.lineDiscountTotal > 0 ? (
+            <View style={styles.totalRow}>
+              <Text>Rabatt auf Positionen</Text>
+              <Text>−{formatMoney(totals.lineDiscountTotal, quote.currency)}</Text>
+            </View>
+          ) : null}
           <View style={styles.totalRow}>
             <Text>Zwischensumme</Text>
+            <Text>{formatMoney(totals.netBeforeDocumentDiscount, quote.currency)}</Text>
+          </View>
+          {totals.documentDiscount > 0 ? (
+            <View style={styles.totalRow}>
+              <Text>Dokumentrabatt {formatVatRate(quote.documentDiscountPercent)}</Text>
+              <Text>−{formatMoney(totals.documentDiscount, quote.currency)}</Text>
+            </View>
+          ) : null}
+          <View style={styles.totalRow}>
+            <Text>Netto</Text>
             <Text>{formatMoney(totals.net, quote.currency)}</Text>
           </View>
-          <View style={styles.totalRow}>
-            <Text>MwSt. {vatShort(quote.vatRate)}</Text>
-            <Text>{formatMoney(totals.vat, quote.currency)}</Text>
-          </View>
+          {totals.vatByRate.map((bucket) => (
+            <View style={styles.totalRow} key={bucket.rate}>
+              <Text>MwSt. {formatVatRate(bucket.rate)}</Text>
+              <Text>{formatMoney(bucket.vat, quote.currency)}</Text>
+            </View>
+          ))}
           <View style={styles.totalStrong}>
             <Text>Gesamt</Text>
             <Text>{formatMoney(totals.gross, quote.currency)}</Text>

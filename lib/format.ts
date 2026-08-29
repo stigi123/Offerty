@@ -1,15 +1,10 @@
-import type { CountryCode, Currency, Party, Quote, QuoteTotals, VatRate } from "./types";
+import type { CountryCode, Currency, LineItem, Party, Quote } from "./types";
+import { defaultVatForCurrency } from "./vat";
 
 export const COUNTRY_LABEL: Record<CountryCode, string> = {
   DE: "Deutschland",
   CH: "Schweiz",
   AT: "Österreich",
-};
-
-export const VAT_LABEL: Record<VatRate, string> = {
-  0: "0 % (steuerfrei / nicht steuerbar)",
-  7.7: "7,7 % (CH)",
-  19: "19 % (DE)",
 };
 
 export function formatMoney(amount: number, currency: Currency): string {
@@ -77,6 +72,18 @@ export function emptyParty(country: CountryCode = "DE"): Party {
   };
 }
 
+export function emptyLineItem(unit = "Std"): LineItem {
+  return {
+    id: newId(),
+    description: "",
+    quantity: 1,
+    unit,
+    unitPrice: 0,
+    vatRate: null,
+    discountPercent: 0,
+  };
+}
+
 export function emptyQuote(): Quote {
   const date = todayIso();
   return {
@@ -84,42 +91,16 @@ export function emptyQuote(): Quote {
     date,
     validUntil: plusDaysIso(14, date),
     currency: "EUR",
-    vatRate: 19,
+    vatRate: defaultVatForCurrency("EUR"),
+    documentDiscountPercent: 0,
     sender: emptyParty("DE"),
     client: emptyParty("DE"),
-    items: [
-      {
-        id: newId(),
-        description: "",
-        quantity: 1,
-        unit: "Std.",
-        unitPrice: 0,
-      },
-    ],
+    items: [emptyLineItem()],
     notes: "",
     intro:
       "sehr geehrte Damen und Herren,\n\nvielen Dank für Ihre Anfrage. Anbei unser Angebot über die unten aufgeführten Leistungen.",
     logoDataUrl: "",
   };
-}
-
-export function lineAmount(quantity: number, unitPrice: number): number {
-  const qty = Number.isFinite(quantity) ? quantity : 0;
-  const price = Number.isFinite(unitPrice) ? unitPrice : 0;
-  return Math.round(qty * price * 100) / 100;
-}
-
-export function quoteTotals(quote: Quote): QuoteTotals {
-  const net =
-    Math.round(
-      quote.items.reduce(
-        (sum, item) => sum + lineAmount(item.quantity, item.unitPrice),
-        0,
-      ) * 100,
-    ) / 100;
-  const vat = Math.round(net * (quote.vatRate / 100) * 100) / 100;
-  const gross = Math.round((net + vat) * 100) / 100;
-  return { net, vat, gross };
 }
 
 export function documentTitle(quote: Quote): string {
@@ -130,11 +111,16 @@ export function documentTitle(quote: Quote): string {
 
 export function filenameFor(quote: Quote): string {
   const kind = documentTitle(quote).toLowerCase();
-  const slug = (quote.number || kind).replace(/[^\w.-]+/g, "-");
+  const slug = (quote.number.trim() || kind).replace(/[^\w.-]+/g, "-");
   return `${slug}.pdf`;
 }
 
 export function partyLine(party: { zip: string; city: string; country: CountryCode }): string {
   const city = [party.zip, party.city].filter(Boolean).join(" ");
   return [city, COUNTRY_LABEL[party.country]].filter(Boolean).join(", ");
+}
+
+export function formatQuantity(quantity: number): string {
+  if (!Number.isFinite(quantity)) return "0";
+  return String(quantity).replace(".", ",");
 }

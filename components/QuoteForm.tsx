@@ -1,25 +1,29 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import Link from "next/link";
-import type { CountryCode, Currency, LineItem, Party, Quote, VatRate } from "@/lib/types";
+import type { CountryCode, Currency, LineItem, Party, Quote } from "@/lib/types";
 import {
   COUNTRY_LABEL,
-  VAT_LABEL,
   documentTitle,
+  emptyLineItem,
   emptyQuote,
   filenameFor,
   formatMoney,
   generateQuoteNumber,
-  lineAmount,
-  newId,
-  quoteTotals,
 } from "@/lib/format";
 import { sampleQuote } from "@/lib/sample";
 import { clearDraft, loadDraft, saveDraft } from "@/lib/storage";
+import { lineRawAmount, quoteTotals } from "@/lib/totals";
 import { isUnlocked, loadUnlock, remainingUnlockLabel } from "@/lib/unlock";
-
-const UNITS = ["Std.", "Tag", "Stk.", "Pauschal", "Pkt."];
+import {
+  UNIT_PRESETS,
+  VAT_PRESETS,
+  defaultVatForCurrency,
+  formatVatRate,
+  parseVatInput,
+  unitChipActive,
+} from "@/lib/vat";
 
 async function fileToDataUrl(file: File): Promise<string> {
   const bitmap = await createImageBitmap(file);
@@ -32,6 +36,54 @@ async function fileToDataUrl(file: File): Promise<string> {
   if (!ctx) throw new Error("Canvas nicht verfügbar");
   ctx.drawImage(bitmap, 0, 0, canvas.width, canvas.height);
   return canvas.toDataURL("image/jpeg", 0.82);
+}
+
+function Chip({
+  pressed,
+  onClick,
+  children,
+}: {
+  pressed: boolean;
+  onClick: () => void;
+  children: ReactNode;
+}) {
+  return (
+    <button type="button" className={`chip${pressed ? " active" : ""}`} aria-pressed={pressed} onClick={onClick}>
+      {children}
+    </button>
+  );
+}
+
+function VatPresetChips({
+  value,
+  inheritLabel,
+  onPick,
+  onInherit,
+}: {
+  value: number | null;
+  inheritLabel?: string;
+  onPick: (rate: number) => void;
+  onInherit?: () => void;
+}) {
+  return (
+    <div className="chips" role="group" aria-label="MwSt.-Vorgaben">
+      {onInherit ? (
+        <Chip pressed={value === null} onClick={onInherit}>
+          {inheritLabel ?? "wie Dokument"}
+        </Chip>
+      ) : null}
+      {VAT_PRESETS.map((group) => (
+        <span key={group.country} className="chip-cluster">
+          <span className="chip-group-label">{group.label}</span>
+          {group.rates.map((rate) => (
+            <Chip key={`${group.country}-${rate}`} pressed={value === rate} onClick={() => onPick(rate)}>
+              {formatVatRate(rate)}
+            </Chip>
+          ))}
+        </span>
+      ))}
+    </div>
+  );
 }
 
 function PartyFields({
@@ -146,15 +198,7 @@ export function QuoteForm() {
 
   function addItem() {
     setQuote((current) =>
-      current
-        ? {
-            ...current,
-            items: [
-              ...current.items,
-              { id: newId(), description: "", quantity: 1, unit: "Std.", unitPrice: 0 },
-            ],
-          }
-        : current,
+      current ? { ...current, items: [...current.items, emptyLineItem()] } : current,
     );
   }
 
@@ -266,10 +310,11 @@ export function QuoteForm() {
           <legend>Dokument</legend>
           <div className="fields">
             <label className="field">
-              Nummer
+              Angebotsnummer
               <input
                 value={quote.number}
                 onChange={(e) => update({ number: e.target.value })}
+                placeholder="z. B. OFF-2026-014"
               />
             </label>
             <label className="field">
@@ -296,7 +341,7 @@ export function QuoteForm() {
                   const currency = e.target.value as Currency;
                   update({
                     currency,
-                    vatRate: currency === "CHF" ? 7.7 : 19,
+                    vatRate: defaultVatForCurrency(currency),
                   });
                 }}
               >
@@ -304,29 +349,45 @@ export function QuoteForm() {
                 <option value="CHF">CHF</option>
               </select>
             </label>
-            <label className="field span-2">
-              Mehrwertsteuer
-              <select
-                value={String(quote.vatRate)}
-                onChange={(e) => update({ vatRate: Number(e.target.value) as VatRate })}
-              >
-                {([0, 7.7, 19] as VatRate[]).map((rate) => (
-                  <option key={rate} value={rate}>
-                    {VAT_LABEL[rate]}
-                  </option>
-                ))}
-              </select>
+            <label className="field">
+              Dokumentrabatt %
+              <input
+                type="number"
+                min={0}
+                max={100}
+                step="0.1"
+                value={quote.documentDiscountPercent || ""}
+                placeholder="0"
+                onChange={(e) =>
+                  update({
+                    documentDiscountPercent: e.target.value === "" ? 0 : parseVatInput(e.target.value, 0),
+                  })
+                }
+              />
             </label>
-            <label className="field span-2">
-              Neues Dokument
+            <div className="field span-2">
+              <span>MwSt. Vorgabe für Positionen</span>
+              <input
+                type="number"
+                min={0}
+                max={100}
+                step="0.1"
+                value={quote.vatRate}
+                onChange={(e) => update({ vatRate: parseVatInput(e.target.value, quote.vatRate) })}
+              />
+              <VatPresetChips value={quote.vatRate} onPick={(rate) => update({ vatRate: rate })} />
+              <span className="muted">Beliebiger Satz, nicht nur die Vorgaben. CH-Standard ist 8,1 %.</span>
+            </div>
+            <div className="field">
+              <span className="muted">Nummer frei wählbar, kein Serverzähler.</span>
               <button
                 type="button"
                 className="btn btn-brass"
                 onClick={() => update({ number: generateQuoteNumber(quote.date) })}
               >
-                Neue Nummer erzeugen
+                Vorschlag erzeugen
               </button>
-            </label>
+            </div>
           </div>
         </fieldset>
 
@@ -379,58 +440,117 @@ export function QuoteForm() {
         <fieldset>
           <legend>Positionen</legend>
           <div className="items">
-            {quote.items.map((item, index) => (
-              <div className="item-row" key={item.id}>
-                <label className="field">
-                  {index + 1}. Beschreibung
-                  <input
-                    value={item.description}
-                    onChange={(e) => updateItem(item.id, { description: e.target.value })}
-                  />
-                </label>
-                <label className="field">
-                  Menge
-                  <input
-                    type="number"
-                    min={0}
-                    step="0.25"
-                    value={item.quantity}
-                    onChange={(e) => updateItem(item.id, { quantity: Number(e.target.value) })}
-                  />
-                </label>
-                <label className="field">
-                  Einheit
-                  <select
-                    value={item.unit}
-                    onChange={(e) => updateItem(item.id, { unit: e.target.value })}
-                  >
-                    {UNITS.map((unit) => (
-                      <option key={unit} value={unit}>
-                        {unit}
-                      </option>
-                    ))}
-                  </select>
-                </label>
-                <label className="field">
-                  Einzelpreis
-                  <input
-                    type="number"
-                    min={0}
-                    step="0.01"
-                    value={item.unitPrice}
-                    onChange={(e) => updateItem(item.id, { unitPrice: Number(e.target.value) })}
-                  />
-                </label>
-                <button
-                  type="button"
-                  className="btn btn-ghost"
-                  onClick={() => removeItem(item.id)}
-                  aria-label={`Position ${index + 1} entfernen`}
-                >
-                  Entfernen
-                </button>
-              </div>
-            ))}
+            {quote.items.map((item, index) => {
+              const computed = totals.lines[index];
+              return (
+                <div className="item-card" key={item.id}>
+                  <div className="item-card-head">
+                    <span className="pos-mark">Pos. {index + 1}</span>
+                    <button
+                      type="button"
+                      className="btn btn-ghost"
+                      onClick={() => removeItem(item.id)}
+                      aria-label={`Position ${index + 1} entfernen`}
+                    >
+                      Entfernen
+                    </button>
+                  </div>
+                  <div className="fields">
+                    <label className="field span-2">
+                      Beschreibung
+                      <input
+                        value={item.description}
+                        onChange={(e) => updateItem(item.id, { description: e.target.value })}
+                      />
+                    </label>
+                    <label className="field">
+                      Menge
+                      <input
+                        type="number"
+                        min={0}
+                        step="0.25"
+                        value={item.quantity}
+                        onChange={(e) => updateItem(item.id, { quantity: Number(e.target.value) })}
+                      />
+                    </label>
+                    <label className="field">
+                      Einzelpreis
+                      <input
+                        type="number"
+                        min={0}
+                        step="0.01"
+                        value={item.unitPrice}
+                        onChange={(e) => updateItem(item.id, { unitPrice: Number(e.target.value) })}
+                      />
+                    </label>
+                    <label className="field">
+                      Rabatt %
+                      <input
+                        type="number"
+                        min={0}
+                        max={100}
+                        step="0.1"
+                        value={item.discountPercent || ""}
+                        placeholder="0"
+                        onChange={(e) =>
+                          updateItem(item.id, {
+                            discountPercent: e.target.value === "" ? 0 : parseVatInput(e.target.value, 0),
+                          })
+                        }
+                      />
+                    </label>
+                    <div className="field span-2">
+                      <span>Einheit</span>
+                      <input
+                        value={item.unit}
+                        onChange={(e) => updateItem(item.id, { unit: e.target.value })}
+                        placeholder="Stk, Std, Pauschale, lfm, m² …"
+                      />
+                      <div className="chips" role="group" aria-label="Einheiten">
+                        {UNIT_PRESETS.map((unit) => (
+                          <Chip
+                            key={unit}
+                            pressed={unitChipActive(item.unit, unit)}
+                            onClick={() => updateItem(item.id, { unit })}
+                          >
+                            {unit}
+                          </Chip>
+                        ))}
+                      </div>
+                    </div>
+                    <div className="field span-2">
+                      <span>MwSt. dieser Position</span>
+                      <input
+                        type="number"
+                        min={0}
+                        max={100}
+                        step="0.1"
+                        value={item.vatRate ?? ""}
+                        placeholder={String(quote.vatRate).replace(".", ",")}
+                        onChange={(e) =>
+                          updateItem(item.id, {
+                            vatRate: e.target.value === "" ? null : parseVatInput(e.target.value, quote.vatRate),
+                          })
+                        }
+                      />
+                      <VatPresetChips
+                        value={item.vatRate}
+                        inheritLabel={`Dokument (${formatVatRate(quote.vatRate)})`}
+                        onPick={(rate) => updateItem(item.id, { vatRate: rate })}
+                        onInherit={() => updateItem(item.id, { vatRate: null })}
+                      />
+                    </div>
+                  </div>
+                  <p className="item-amount">
+                    Betrag {formatMoney(computed?.afterLineDiscount ?? lineRawAmount(item), quote.currency)}
+                    {item.discountPercent > 0
+                      ? ` · Rabatt ${formatVatRate(item.discountPercent)} sichtbar im PDF`
+                      : ""}
+                    {` · ${formatVatRate(computed?.vatRate ?? quote.vatRate)}`}
+                  </p>
+                </div>
+              );
+            })}
           </div>
           <button type="button" className="btn btn-brass" onClick={addItem} style={{ marginTop: 12 }}>
             Position hinzufügen
@@ -464,18 +584,40 @@ export function QuoteForm() {
         </span>
         <h2>Summe</h2>
         <dl>
-          {quote.items.map((item, index) => (
-            <div key={item.id} style={{ display: "contents" }}>
-              <dt>
-                {String(index + 1).padStart(2, "0")} {item.description || "Position"}
-              </dt>
-              <dd>{formatMoney(lineAmount(item.quantity, item.unitPrice), quote.currency)}</dd>
+          {totals.lines.map((line) => {
+            const item = quote.items.find((row) => row.id === line.id);
+            return (
+              <div key={line.id} style={{ display: "contents" }}>
+                <dt>
+                  Pos. {line.pos} {item?.description || "Position"}
+                  {item?.unit ? ` · ${item.unit}` : ""}
+                </dt>
+                <dd>{formatMoney(line.afterLineDiscount, quote.currency)}</dd>
+              </div>
+            );
+          })}
+          {totals.lineDiscountTotal > 0 ? (
+            <>
+              <dt>Rabatt auf Positionen</dt>
+              <dd>−{formatMoney(totals.lineDiscountTotal, quote.currency)}</dd>
+            </>
+          ) : null}
+          <dt>Zwischensumme</dt>
+          <dd>{formatMoney(totals.netBeforeDocumentDiscount, quote.currency)}</dd>
+          {totals.documentDiscount > 0 ? (
+            <>
+              <dt>Dokumentrabatt {formatVatRate(quote.documentDiscountPercent)}</dt>
+              <dd>−{formatMoney(totals.documentDiscount, quote.currency)}</dd>
+            </>
+          ) : null}
+          <dt>Netto</dt>
+          <dd>{formatMoney(totals.net, quote.currency)}</dd>
+          {totals.vatByRate.map((bucket) => (
+            <div key={bucket.rate} style={{ display: "contents" }}>
+              <dt>MwSt. {formatVatRate(bucket.rate)}</dt>
+              <dd>{formatMoney(bucket.vat, quote.currency)}</dd>
             </div>
           ))}
-          <dt>Zwischensumme</dt>
-          <dd>{formatMoney(totals.net, quote.currency)}</dd>
-          <dt>MwSt. {quote.vatRate.toString().replace(".", ",")} %</dt>
-          <dd>{formatMoney(totals.vat, quote.currency)}</dd>
           <dt className="grand">Gesamt</dt>
           <dd className="grand">{formatMoney(totals.gross, quote.currency)}</dd>
         </dl>

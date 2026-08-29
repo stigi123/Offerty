@@ -392,18 +392,77 @@ legend {
 .items {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 12px;
 }
 
-.item-row {
-  display: grid;
-  grid-template-columns: minmax(0, 2.2fr) 80px 100px 110px auto;
-  gap: 8px;
-  align-items: end;
+.item-card {
+  border: 1px solid var(--rule);
+  background: rgba(255, 252, 244, 0.7);
+  padding: 14px 14px 10px;
 }
 
-.item-row .field {
-  min-width: 0;
+.item-card-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 10px;
+}
+
+.pos-mark {
+  font-family: var(--font-sans), sans-serif;
+  font-size: 0.72rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--brass-deep);
+}
+
+.item-amount {
+  font-family: var(--font-sans), sans-serif;
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+  margin: 10px 0 0;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+}
+
+.chip-cluster {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+  margin-right: 8px;
+}
+
+.chip-group-label {
+  font-size: 0.68rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--brass-deep);
+}
+
+.chip {
+  appearance: none;
+  font-family: var(--font-sans), sans-serif;
+  font-size: 0.75rem;
+  letter-spacing: 0.03em;
+  border: 1px solid var(--rule);
+  background: #fffaf0;
+  color: var(--pine-deep);
+  padding: 0.28rem 0.55rem;
+  cursor: pointer;
+}
+
+.chip:hover,
+.chip.active,
+.chip[aria-pressed="true"] {
+  background: var(--pine);
+  color: var(--paper);
+  border-color: var(--pine);
 }
 
 .aside {
@@ -522,14 +581,6 @@ legend {
   .hero,
   .pad {
     padding: 28px 20px;
-  }
-
-  .item-row {
-    grid-template-columns: 1fr 1fr;
-  }
-
-  .item-row .field:first-child {
-    grid-column: 1 / -1;
   }
 
   .fields {

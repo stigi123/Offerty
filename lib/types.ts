@@ -1,5 +1,4 @@
 export type Currency = "EUR" | "CHF";
-export type VatRate = 0 | 7.7 | 19;
 export type CountryCode = "DE" | "CH" | "AT";
 
 export interface Party {
@@ -19,6 +18,9 @@ export interface LineItem {
   quantity: number;
   unit: string;
   unitPrice: number;
+  /** null = document default rate */
+  vatRate: number | null;
+  discountPercent: number;
 }
 
 export interface Quote {
@@ -26,7 +28,8 @@ export interface Quote {
   date: string;
   validUntil: string;
   currency: Currency;
-  vatRate: VatRate;
+  vatRate: number;
+  documentDiscountPercent: number;
   sender: Party;
   client: Party;
   items: LineItem[];
@@ -35,8 +38,31 @@ export interface Quote {
   logoDataUrl: string;
 }
 
-export interface QuoteTotals {
+export interface VatBucket {
+  rate: number;
   net: number;
   vat: number;
+}
+
+export interface LineComputed {
+  id: string;
+  pos: number;
+  raw: number;
+  lineDiscount: number;
+  afterLineDiscount: number;
+  documentDiscountShare: number;
+  net: number;
+  vatRate: number;
+  vat: number;
+}
+
+export interface QuoteTotals {
+  lineDiscountTotal: number;
+  documentDiscount: number;
+  netBeforeDocumentDiscount: number;
+  net: number;
+  vatByRate: VatBucket[];
+  vat: number;
   gross: number;
+  lines: LineComputed[];
 }

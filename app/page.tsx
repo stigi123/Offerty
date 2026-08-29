@@ -73,7 +73,7 @@ export default function HomePage() {
           <p className="kicker">Was enthalten ist</p>
           <h2>Alles für die erste Offerte.</h2>
           <ul>
-            <li>EUR und CHF, MwSt. 0 % / 7,7 % / 19 %</li>
+            <li>EUR und CHF, MwSt. frei (DE/CH/AT-Sätze), Rabatt, Einheiten</li>
             <li>Gültig-bis, Hinweise, optionales Logo</li>
             <li>Beispieldaten und lokaler Entwurf</li>
             <li>Kein Tracking-Konto, keine Cloud-Akte</li>
