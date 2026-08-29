@@ -41,6 +41,16 @@ export default function DatenschutzPage() {
         Die Website wird bei Vercel gehostet. Beim Aufruf verarbeitet Vercel übliche
         Verbindungsdaten (IP-Adresse, Zeitpunkt, User-Agent).
       </p>
+      <h2>Reichweitenmessung</h2>
+      <p>
+        Wir nutzen Vercel Web Analytics. Erfasst werden Seitenaufrufe sowie die
+        Ereignisse create_click, pdf_download, unlock_click und unlock_submit
+        (Klicks zum Formular bzw. zur Freischaltung, PDF-Download, Absenden eines
+        Transaktionshash). Es werden keine Angebotsinhalte, Namen, Beträge,
+        Wallet-Adressen oder Hashes als Ereigniseigenschaften gesendet. Es gibt
+        keine Werbe-Cookies und keine Nutzerkonten. Ein Cookie-Banner ist dafür
+        nicht vorgesehen.
+      </p>
       <h2>Rechte</h2>
       <p>
         Soweit die DSGVO oder das nDSG / DSG (CH) Anwendung findet: Auskunft, Berichtigung,

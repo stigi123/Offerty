@@ -1,7 +1,8 @@
 "use client";
 
 import { FormEvent, useEffect, useState } from "react";
-import Link from "next/link";
+import { TrackedLink } from "@/components/TrackedLink";
+import { trackEvent } from "@/lib/analytics";
 import {
   UNLOCK_DAYS,
   UNLOCK_PRICE_EUR,
@@ -44,6 +45,7 @@ export function UnlockForm({
     setStatus(null);
     try {
       const record = unlockWithTxHash(txHash);
+      trackEvent("unlock_submit");
       setActive(remainingUnlockLabel(record));
       setStatus(
         "Freischaltung gespeichert. Neue PDFs in diesem Browser erscheinen 30 Tage ohne Wasserzeichen.",
@@ -113,9 +115,9 @@ export function UnlockForm({
           <button className="btn" type="submit">
             Freischalten
           </button>
-          <Link className="btn btn-brass" href="/erstellen">
+          <TrackedLink className="btn btn-brass" href="/erstellen" event="create_click">
             Zum Angebot
-          </Link>
+          </TrackedLink>
         </div>
       </form>
     </section>

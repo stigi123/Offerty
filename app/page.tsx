@@ -1,5 +1,5 @@
-import Link from "next/link";
 import { SealMark } from "@/components/SealMark";
+import { TrackedLink } from "@/components/TrackedLink";
 
 export default function HomePage() {
   return (
@@ -13,12 +13,12 @@ export default function HomePage() {
             Kein Konto, kein Server-Upload. Das Dokument entsteht in Ihrem Browser.
           </p>
           <div className="actions">
-            <Link className="btn" href="/erstellen">
+            <TrackedLink className="btn" href="/erstellen" event="create_click">
               Angebot erstellen
-            </Link>
-            <Link className="btn btn-brass" href="/entsperren">
+            </TrackedLink>
+            <TrackedLink className="btn btn-brass" href="/entsperren" event="unlock_click">
               Wasserzeichen entfernen · 9 €
-            </Link>
+            </TrackedLink>
           </div>
         </div>
         <SealMark className="wax" />
@@ -65,9 +65,9 @@ export default function HomePage() {
           </p>
           <p className="price">9 €</p>
           <p className="muted">pro 30 Tage · Transaktionshash genügt (v1)</p>
-          <Link className="btn" href="/entsperren">
+          <TrackedLink className="btn" href="/entsperren" event="unlock_click">
             Zur Freischaltung
-          </Link>
+          </TrackedLink>
         </section>
         <section className="sheet pad">
           <p className="kicker">Was enthalten ist</p>

@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
-import Link from "next/link";
+import { TrackedLink } from "@/components/TrackedLink";
 import type { CountryCode, Currency, LineItem, Party, Quote } from "@/lib/types";
 import {
   COUNTRY_LABEL,
@@ -15,6 +15,7 @@ import {
 import { sampleQuote } from "@/lib/sample";
 import { clearDraft, loadDraft, saveDraft } from "@/lib/storage";
 import { lineRawAmount, quoteTotals } from "@/lib/totals";
+import { trackEvent } from "@/lib/analytics";
 import { isUnlocked, loadUnlock, remainingUnlockLabel } from "@/lib/unlock";
 import {
   UNIT_PRESETS,
@@ -244,6 +245,7 @@ export function QuoteForm() {
       a.download = filenameFor(quote);
       a.click();
       URL.revokeObjectURL(url);
+      trackEvent("pdf_download");
       setMessage(
         isUnlocked()
           ? "PDF ohne Wasserzeichen heruntergeladen."
@@ -631,7 +633,9 @@ export function QuoteForm() {
         {!unlocked ? (
           <p className="muted" style={{ marginTop: 12 }}>
             Kostenlose PDFs tragen „Offertly — Demo“.{" "}
-            <Link href="/entsperren">30 Tage entsperren für 9 €</Link>
+            <TrackedLink href="/entsperren" event="unlock_click">
+              30 Tage entsperren für 9 €
+            </TrackedLink>
           </p>
         ) : null}
       </aside>
