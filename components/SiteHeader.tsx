@@ -8,6 +8,7 @@ import type { OffertlyEvent } from "@/lib/analytics";
 
 const LINKS: { href: string; label: string; event?: OffertlyEvent }[] = [
   { href: "/erstellen", label: "Erstellen", event: "create_click" },
+  { href: "/anleitung", label: "Anleitung" },
   { href: "/entsperren", label: "Entsperren", event: "unlock_click" },
   { href: "/impressum", label: "Impressum" },
   { href: "/datenschutz", label: "Datenschutz" },

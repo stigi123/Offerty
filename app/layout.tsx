@@ -3,6 +3,7 @@ import { Analytics } from "@vercel/analytics/react";
 import { Fraunces, Source_Sans_3, Source_Serif_4 } from "next/font/google";
 import { SiteFooter } from "@/components/SiteFooter";
 import { SiteHeader } from "@/components/SiteHeader";
+import { SITE_NAME, SITE_URL } from "@/lib/seo";
 import "./globals.css";
 
 const display = Fraunces({
@@ -22,14 +23,37 @@ const sans = Source_Sans_3({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
   title: {
-    default: "Offertly — Angebot & Offerte in unter 60 Sekunden",
+    default: "Angebot erstellen als PDF | Offertly für Freelancer (DE/CH/AT)",
     template: "%s · Offertly",
   },
   description:
-    "Deutsche Angebote und Offerten als gesetztes A4-PDF. Für Freelancer in Deutschland, der Schweiz und Österreich. Kein Konto. PDF entsteht im Browser.",
-  applicationName: "Offertly",
-  keywords: ["Angebot", "Offerte", "PDF", "Freelancer", "Deutschland", "Schweiz", "Österreich"],
+    "Angebot oder Offerte als gesetztes A4-PDF. Vorlage für Freelancer in Deutschland, der Schweiz und Österreich. Kein Konto — PDF im Browser.",
+  applicationName: SITE_NAME,
+  keywords: [
+    "Angebot erstellen PDF",
+    "Offerte erstellen Schweiz",
+    "Angebot Vorlage Freelancer",
+    "Angebot Freelancer Deutschland",
+    "Offerte PDF Österreich",
+  ],
+  openGraph: {
+    type: "website",
+    locale: "de_DE",
+    url: SITE_URL,
+    siteName: SITE_NAME,
+    title: "Angebot erstellen als PDF | Offertly für Freelancer (DE/CH/AT)",
+    description:
+      "Angebot oder Offerte als gesetztes A4-PDF. Für Freelancer in DE, CH und AT. Kein Konto.",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Angebot erstellen als PDF | Offertly",
+    description:
+      "Angebot oder Offerte als A4-PDF für Freelancer in DE, CH und AT. Kein Konto.",
+  },
+  alternates: { canonical: SITE_URL },
 };
 
 export const viewport: Viewport = {

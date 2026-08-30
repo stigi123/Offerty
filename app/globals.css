@@ -527,6 +527,11 @@ legend {
   font-size: 1.02rem;
 }
 
+.legal h3 {
+  font-size: 1.15rem;
+  margin: 1.25rem 0 0.35rem;
+}
+
 .placeholder {
   font-family: var(--font-sans), sans-serif;
   background: #efe0c0;
