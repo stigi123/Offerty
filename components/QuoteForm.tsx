@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { TrackedLink } from "@/components/TrackedLink";
+import { QuotePreview } from "@/components/QuotePreview";
 import type { CountryCode, Currency, LineItem, Party, Quote } from "@/lib/types";
 import {
   COUNTRY_LABEL,
@@ -611,49 +612,11 @@ export function QuoteForm() {
         </fieldset>
       </form>
 
-      <aside className="sheet pad aside totals">
+      <aside className="sheet pad aside live-preview">
         <span className="status-pill">
           {unlocked ? `Freigeschaltet · ${unlockLabel}` : "Demo · mit Wasserzeichen"}
         </span>
-        <h2>Summe</h2>
-        <dl>
-          {totals.lines.map((line) => {
-            const item = quote.items.find((row) => row.id === line.id);
-            return (
-              <div key={line.id} style={{ display: "contents" }}>
-                <dt>
-                  Pos. {line.pos} {item?.description || "Position"}
-                  {item?.unit ? ` · ${item.unit}` : ""}
-                </dt>
-                <dd>{formatMoney(line.afterLineDiscount, quote.currency)}</dd>
-              </div>
-            );
-          })}
-          {totals.lineDiscountTotal > 0 ? (
-            <>
-              <dt>Rabatt auf Positionen</dt>
-              <dd>−{formatMoney(totals.lineDiscountTotal, quote.currency)}</dd>
-            </>
-          ) : null}
-          <dt>Zwischensumme</dt>
-          <dd>{formatMoney(totals.netBeforeDocumentDiscount, quote.currency)}</dd>
-          {totals.documentDiscount > 0 ? (
-            <>
-              <dt>Dokumentrabatt {formatVatRate(quote.documentDiscountPercent)}</dt>
-              <dd>−{formatMoney(totals.documentDiscount, quote.currency)}</dd>
-            </>
-          ) : null}
-          <dt>Netto</dt>
-          <dd>{formatMoney(totals.net, quote.currency)}</dd>
-          {totals.vatByRate.map((bucket) => (
-            <div key={bucket.rate} style={{ display: "contents" }}>
-              <dt>MwSt. {formatVatRate(bucket.rate)}</dt>
-              <dd>{formatMoney(bucket.vat, quote.currency)}</dd>
-            </div>
-          ))}
-          <dt className="grand">Gesamt</dt>
-          <dd className="grand">{formatMoney(totals.gross, quote.currency)}</dd>
-        </dl>
+        <QuotePreview quote={quote} totals={totals} watermark={!unlocked} />
 
         {error ? <p className="alert alert-warn">{error}</p> : null}
         {message ? <p className="alert">{message}</p> : null}

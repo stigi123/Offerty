@@ -224,11 +224,41 @@ textarea {
   border: 1px solid #d7c9ab;
   box-shadow: 0 14px 32px rgba(28, 50, 40, 0.16);
   padding: 18px 20px 16px;
-  transform: rotate(0.6deg);
   font-family: var(--font-serif), serif;
   font-size: 0.78rem;
   line-height: 1.4;
   color: var(--ink);
+  position: relative;
+  overflow-x: auto;
+}
+
+.quote-preview-compact {
+  transform: rotate(0.6deg);
+}
+
+.quote-preview-live {
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+  padding: 8px 0 0;
+  transform: none;
+}
+
+.quote-preview-mark {
+  position: absolute;
+  top: 42%;
+  left: -8%;
+  width: 116%;
+  margin: 0;
+  text-align: center;
+  font-family: var(--font-display), serif;
+  font-size: 1.7rem;
+  color: var(--pine);
+  opacity: 0.14;
+  letter-spacing: 0.08em;
+  transform: rotate(-24deg);
+  pointer-events: none;
+  z-index: 1;
 }
 
 .quote-preview-top {
@@ -270,8 +300,14 @@ textarea {
 
 .quote-preview-rule {
   height: 2px;
-  background: linear-gradient(90deg, var(--brass), transparent);
-  margin: 8px 0 12px;
+  background: var(--brass);
+  margin: 8px 0 0;
+}
+
+.quote-preview-rule-thin {
+  height: 1px;
+  background: var(--brass-light);
+  margin: 2px 0 12px;
 }
 
 .quote-preview-parties {
@@ -290,8 +326,43 @@ textarea {
   text-align: right;
 }
 
+.quote-preview-meta-line {
+  margin: 2px 0 0;
+  color: var(--ink-soft);
+}
+
+.quote-preview-intro,
+.quote-preview-notes,
+.quote-preview-closing {
+  white-space: pre-line;
+  margin: 10px 0 0;
+}
+
+.quote-preview-intro {
+  max-height: 4.8em;
+  overflow: hidden;
+}
+
+.quote-preview-notes {
+  font-size: 0.72rem;
+  color: var(--ink-soft);
+  max-height: 4.2em;
+  overflow: hidden;
+}
+
+.quote-preview-closing {
+  margin-top: 14px;
+}
+
+.quote-preview-note {
+  display: block;
+  color: var(--brass-deep);
+  font-size: 0.68rem;
+}
+
 .quote-preview-table {
   width: 100%;
+  min-width: 26rem;
   border-collapse: collapse;
   margin: 12px 0 8px;
   font-family: var(--font-sans), sans-serif;
@@ -304,7 +375,7 @@ textarea {
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--brass-deep);
-  border-bottom: 1px solid var(--rule);
+  border-bottom: 1px solid var(--brass);
   padding: 0 6px 6px 0;
 }
 
@@ -314,16 +385,10 @@ textarea {
   border-bottom: 1px solid rgba(201, 180, 138, 0.45);
 }
 
-.quote-preview-table th:last-child,
-.quote-preview-table td:last-child,
-.quote-preview-table th:nth-child(3),
-.quote-preview-table td:nth-child(3) {
+.quote-preview-table th:nth-child(n + 3),
+.quote-preview-table td:nth-child(n + 3) {
   text-align: right;
   white-space: nowrap;
-}
-
-.quote-preview-unit {
-  display: none;
 }
 
 .quote-preview-totals {
@@ -529,7 +594,7 @@ h2 {
 
 .form-layout {
   display: grid;
-  grid-template-columns: minmax(0, 1.6fr) minmax(280px, 0.8fr);
+  grid-template-columns: minmax(0, 1.2fr) minmax(320px, 1.05fr);
   gap: 24px;
   align-items: start;
 }
@@ -667,9 +732,9 @@ legend {
   border-color: var(--pine);
 }
 
-.aside {
-  position: sticky;
-  top: 16px;
+.live-preview .btn {
+  width: 100%;
+  margin-top: 14px;
 }
 
 .totals {
@@ -785,21 +850,12 @@ legend {
     grid-template-columns: 1fr;
   }
 
-  .quote-preview {
+  .quote-preview-compact {
     transform: none;
   }
 
   .quote-preview-meta {
     text-align: left;
-  }
-
-  .quote-preview-table th:nth-child(3),
-  .quote-preview-table td:nth-child(3) {
-    display: none;
-  }
-
-  .quote-preview-unit {
-    display: inline;
   }
 
   .copy-row {
