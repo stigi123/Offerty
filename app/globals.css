@@ -186,6 +186,199 @@ textarea {
   align-items: center;
 }
 
+.hero-sample {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.08fr);
+  align-items: start;
+  gap: 28px;
+}
+
+.price-line {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 8px 14px;
+  margin: 0 0 24px;
+  font-family: var(--font-sans), sans-serif;
+  font-size: 0.98rem;
+}
+
+.price-line strong {
+  font-family: var(--font-display), serif;
+  font-size: 1.35rem;
+  font-weight: 560;
+  color: var(--pine-deep);
+}
+
+.price-line span {
+  color: var(--ink-soft);
+}
+
+.quote-preview-wrap {
+  margin: 0;
+  position: relative;
+  z-index: 1;
+}
+
+.quote-preview {
+  background: #fffaf0;
+  border: 1px solid #d7c9ab;
+  box-shadow: 0 14px 32px rgba(28, 50, 40, 0.16);
+  padding: 18px 20px 16px;
+  transform: rotate(0.6deg);
+  font-family: var(--font-serif), serif;
+  font-size: 0.78rem;
+  line-height: 1.4;
+  color: var(--ink);
+}
+
+.quote-preview-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.quote-preview-kicker,
+.quote-preview-label {
+  font-family: var(--font-sans), sans-serif;
+  font-size: 0.62rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--brass-deep);
+  margin: 0 0 4px;
+}
+
+.quote-preview-kind {
+  font-family: var(--font-display), serif;
+  font-size: 1.35rem;
+  color: var(--pine-deep);
+  margin: 0;
+  letter-spacing: 0.04em;
+}
+
+.quote-preview-no,
+.quote-preview-unit {
+  color: var(--ink-soft);
+}
+
+.quote-preview-no {
+  margin: 2px 0 0;
+  font-family: var(--font-sans), sans-serif;
+  font-size: 0.72rem;
+}
+
+.quote-preview-rule {
+  height: 2px;
+  background: linear-gradient(90deg, var(--brass), transparent);
+  margin: 8px 0 12px;
+}
+
+.quote-preview-parties {
+  display: grid;
+  grid-template-columns: 1.3fr 0.9fr;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.quote-preview-name {
+  font-weight: 600;
+  margin: 0 0 2px;
+}
+
+.quote-preview-meta {
+  text-align: right;
+}
+
+.quote-preview-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 12px 0 8px;
+  font-family: var(--font-sans), sans-serif;
+  font-size: 0.72rem;
+}
+
+.quote-preview-table th {
+  text-align: left;
+  font-size: 0.62rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--brass-deep);
+  border-bottom: 1px solid var(--rule);
+  padding: 0 6px 6px 0;
+}
+
+.quote-preview-table td {
+  padding: 6px 6px 6px 0;
+  vertical-align: top;
+  border-bottom: 1px solid rgba(201, 180, 138, 0.45);
+}
+
+.quote-preview-table th:last-child,
+.quote-preview-table td:last-child,
+.quote-preview-table th:nth-child(3),
+.quote-preview-table td:nth-child(3) {
+  text-align: right;
+  white-space: nowrap;
+}
+
+.quote-preview-unit {
+  display: none;
+}
+
+.quote-preview-totals {
+  display: grid;
+  gap: 4px;
+  margin: 10px 0 0;
+  font-family: var(--font-sans), sans-serif;
+  font-size: 0.78rem;
+}
+
+.quote-preview-totals > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.quote-preview-totals dt,
+.quote-preview-totals dd {
+  margin: 0;
+}
+
+.quote-preview-grand {
+  font-family: var(--font-display), serif;
+  font-size: 1.05rem;
+  color: var(--pine-deep);
+  border-top: 1px solid var(--brass);
+  padding-top: 6px;
+  margin-top: 4px;
+}
+
+.quote-preview-wrap figcaption {
+  font-family: var(--font-sans), sans-serif;
+  font-size: 0.78rem;
+  color: var(--ink-soft);
+  margin-top: 10px;
+}
+
+.pay-box {
+  border: 1px solid var(--brass);
+  background: rgba(184, 149, 74, 0.08);
+  padding: 16px 18px;
+  margin: 0 0 22px;
+}
+
+.pay-box .price {
+  margin: 0 0 6px;
+}
+
+.template-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0 0 18px;
+}
+
 .kicker {
   font-family: var(--font-sans), sans-serif;
   font-size: 0.75rem;
@@ -570,12 +763,38 @@ legend {
   border: 0;
 }
 
+.hero-sample .lede {
+  margin-bottom: 16px;
+}
+
 @media (max-width: 900px) {
   .hero,
   .grid-2,
   .form-layout,
-  .band {
+  .band,
+  .quote-preview-parties {
     grid-template-columns: 1fr;
+  }
+
+  .quote-preview {
+    transform: none;
+  }
+
+  .quote-preview-meta {
+    text-align: left;
+  }
+
+  .quote-preview-table th:nth-child(3),
+  .quote-preview-table td:nth-child(3) {
+    display: none;
+  }
+
+  .quote-preview-unit {
+    display: inline;
+  }
+
+  .copy-row {
+    flex-direction: column;
   }
 
   .band article {

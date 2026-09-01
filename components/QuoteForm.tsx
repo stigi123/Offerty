@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { TrackedLink } from "@/components/TrackedLink";
 import type { CountryCode, Currency, LineItem, Party, Quote } from "@/lib/types";
 import {
@@ -12,7 +13,11 @@ import {
   formatMoney,
   generateQuoteNumber,
 } from "@/lib/format";
-import { sampleQuote } from "@/lib/sample";
+import {
+  DEFAULT_STARTER_ID,
+  STARTER_TEMPLATES,
+  getStarterTemplate,
+} from "@/lib/templates";
 import { clearDraft, loadDraft, saveDraft } from "@/lib/storage";
 import { lineRawAmount, quoteTotals } from "@/lib/totals";
 import { trackEvent } from "@/lib/analytics";
@@ -157,6 +162,8 @@ function PartyFields({
 }
 
 export function QuoteForm() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
   const [quote, setQuote] = useState<Quote | null>(null);
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
@@ -166,11 +173,21 @@ export function QuoteForm() {
   const logoInput = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
+    const fromQuery = getStarterTemplate(searchParams.get("vorlage"));
     const draft = loadDraft();
-    setQuote(draft ?? emptyQuote());
+    if (fromQuery) {
+      setQuote(fromQuery.build());
+      setMessage(`${fromQuery.label} geladen. Namen und Beträge anpassen, dann PDF laden.`);
+      router.replace("/erstellen", { scroll: false });
+    } else {
+      const fallback = getStarterTemplate(DEFAULT_STARTER_ID) ?? STARTER_TEMPLATES[0];
+      setQuote(draft ?? fallback.build());
+    }
     const record = loadUnlock();
     setUnlocked(Boolean(record));
     setUnlockLabel(record ? remainingUnlockLabel(record) : null);
+    // Vorlage aus der URL nur beim ersten Laden anwenden.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -281,20 +298,25 @@ export function QuoteForm() {
         <h1>Angaben zum Auftrag</h1>
         <p className="muted">
           Entwurf wird lokal gespeichert. Kein Konto. PDF entsteht in diesem Browser.
+          Vorlagen ersetzen den aktuellen Entwurf.
         </p>
 
-        <div className="actions" style={{ marginBottom: 18 }}>
-          <button
-            type="button"
-            className="btn btn-brass"
-            onClick={() => {
-              setQuote(sampleQuote());
-              setMessage("Beispieldaten geladen.");
-              setError(null);
-            }}
-          >
-            Beispieldaten
-          </button>
+        <div className="template-bar" role="group" aria-label="Vorlagen">
+          {STARTER_TEMPLATES.map((template) => (
+            <button
+              key={template.id}
+              type="button"
+              className="btn btn-brass"
+              title={template.blurb}
+              onClick={() => {
+                setQuote(template.build());
+                setMessage(`${template.label} geladen. Namen und Beträge anpassen.`);
+                setError(null);
+              }}
+            >
+              {template.label}
+            </button>
+          ))}
           <button
             type="button"
             className="btn btn-ghost"
@@ -302,6 +324,7 @@ export function QuoteForm() {
               clearDraft();
               setQuote(emptyQuote());
               setMessage("Entwurf gelöscht.");
+              setError(null);
             }}
           >
             Entwurf löschen

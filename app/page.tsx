@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { SealMark } from "@/components/SealMark";
+import { SampleOfferPreview } from "@/components/SampleOfferPreview";
 import { TrackedLink } from "@/components/TrackedLink";
 import { openGraphFor, SITE_NAME, SITE_URL } from "@/lib/seo";
 
@@ -49,25 +49,25 @@ export default function HomePage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(softwareJsonLd) }}
       />
-      <section className="sheet hero">
+      <section className="sheet hero hero-sample">
         <div>
           <p className="kicker">Für Freelancer in DE · CH · AT</p>
           <h1>Die Offerte, die sitzt.</h1>
           <p className="lede">
-            Angebot erstellen als PDF: Jobdetails eintragen, A4 herunterladen — in unter
-            60 Sekunden. Für Freelancer in Deutschland, der Schweiz und Österreich. Kein
-            Konto. Das Dokument entsteht in Ihrem Browser.
+            Angaben eintragen, A4-PDF laden. Kein Konto — das Dokument entsteht in Ihrem
+            Browser.
+          </p>
+          <p className="price-line">
+            <strong>9 € / 30 Tage</strong>
+            <span>sonst Wasserzeichen „Offertly — Demo“</span>
           </p>
           <div className="actions">
             <TrackedLink className="btn" href="/erstellen" event="create_click">
               Angebot erstellen
             </TrackedLink>
-            <Link className="btn btn-brass" href="/anleitung">
-              Anleitung lesen
-            </Link>
           </div>
         </div>
-        <SealMark className="wax" />
+        <SampleOfferPreview />
       </section>
 
       <section className="sheet" style={{ marginTop: 24 }}>
@@ -106,11 +106,11 @@ export default function HomePage() {
           <p>
             Jedes PDF ohne Freischaltung trägt das Wasserzeichen{" "}
             <strong>Offertly — Demo</strong>. Für 9 € schalten Sie 30 Tage
-            unbegrenzte PDFs ohne Kennzeichnung frei — Zahlung per Krypto, ohne
-            Benutzerkonto.
+            unbegrenzte PDFs ohne Kennzeichnung frei — Zahlung in SOL oder USDC auf
+            Solana, ohne Benutzerkonto.
           </p>
           <p className="price">9 €</p>
-          <p className="muted">pro 30 Tage · Transaktionshash genügt (v1)</p>
+          <p className="muted">pro 30 Tage · Solana (Phantom)</p>
           <TrackedLink className="btn" href="/entsperren" event="unlock_click">
             Zur Freischaltung
           </TrackedLink>
@@ -121,7 +121,7 @@ export default function HomePage() {
           <ul>
             <li>EUR und CHF, MwSt. frei (DE/CH/AT-Sätze), Rabatt, Einheiten</li>
             <li>Gültig-bis, Hinweise, optionales Logo</li>
-            <li>Beispieldaten und lokaler Entwurf</li>
+            <li>Vorlagen für IT, Handwerk und Beratung</li>
             <li>Kein Tracking-Konto, keine Cloud-Akte</li>
           </ul>
         </section>
@@ -140,7 +140,7 @@ export default function HomePage() {
           <TrackedLink href="/erstellen" event="create_click">
             /erstellen
           </TrackedLink>
-          .
+          . Vorlagen für Stunden, Handwerk und Pauschale sind dort ein Klick.
         </p>
       </section>
     </>

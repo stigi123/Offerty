@@ -5,7 +5,7 @@ import { openGraphFor, pageUrl } from "@/lib/seo";
 
 const title = "PDF ohne Wasserzeichen — Offertly entsperren";
 const description =
-  "9 € für 30 Tage Angebote und Offerten ohne Demo-Kennzeichnung. Kein Konto, Zahlung per Krypto.";
+  "9 € für 30 Tage Angebote und Offerten ohne Demo-Kennzeichnung. Kein Konto. Zahlung in SOL oder USDC auf Solana (Phantom).";
 
 export const metadata: Metadata = {
   title,

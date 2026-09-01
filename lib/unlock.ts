@@ -4,7 +4,7 @@ export const UNLOCK_DAYS = 30;
 
 /** Klar als unecht erkennbar, falls WALLET_ADDRESS nicht gesetzt ist. */
 export const FAKE_WALLET_PLACEHOLDER =
-  "0xDEMO-OFFERTLY-KEINE-ECHTE-WALLET-000000000000 — Platzhalter, nicht überweisen";
+  "SOL-DEMO-OFFERTLY-KEINE-ECHTE-WALLET — Platzhalter, nicht überweisen";
 
 export interface UnlockRecord {
   txHash: string;

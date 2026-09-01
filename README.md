@@ -7,11 +7,10 @@ Das GitHub-Repository heißt weiterhin **Offerty**. Das Produkt heißt **Offertl
 ## Funktionen
 
 - Formular unter `/erstellen`: Absender, Auftraggeber, nummerierte Positionen mit Einheit, EUR/CHF, frei wählbare MwSt. (Vorgaben DE/CH/AT, CH-Standard 8,1 %), Positions- und Dokumentrabatt, Gültig-bis, Hinweise, optionales Logo, Angebotsnummer
-- Entwurf in `localStorage`, Knopf **Beispieldaten**
+- Drei Startvorlagen (IT-Stunden, Handwerk, Beratung); Entwurf in `localStorage`
 - PDF im **Browser** mit [`@react-pdf/renderer`](https://react-pdf.org/) (A4)
 - Kostenlose PDFs mit Wasserzeichen **Offertly — Demo**
-- Freischaltung **9 € / 30 Tage** unter `/entsperren` (Krypto-Anweisung, Empfangsadresse aus `WALLET_ADDRESS`)
-- v1 akzeptiert jeden **nicht-leeren Transaktionshash** (keine On-Chain-Prüfung)
+- Freischaltung **9 € / 30 Tage** unter `/entsperren`: Zahlung in **SOL oder USDC auf Solana** (Phantom), Empfangsadresse aus `WALLET_ADDRESS`
 - Ist `WALLET_ADDRESS` leer, erscheint ein **klar als Fake gekennzeichneter Platzhalter**
 - `/impressum` und `/datenschutz` mit den hinterlegten Betreiberangaben — keine erfundenen E-Mails oder USt-IdNr.
 

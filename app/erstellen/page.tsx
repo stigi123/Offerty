@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import { QuoteForm } from "@/components/QuoteForm";
 import { openGraphFor, pageUrl } from "@/lib/seo";
 
@@ -18,6 +19,19 @@ export const metadata: Metadata = {
   },
 };
 
+function FormFallback() {
+  return (
+    <section className="sheet pad">
+      <p className="kicker">Offertly</p>
+      <h1>Entwurf wird geladen…</h1>
+    </section>
+  );
+}
+
 export default function ErstellenPage() {
-  return <QuoteForm />;
+  return (
+    <Suspense fallback={<FormFallback />}>
+      <QuoteForm />
+    </Suspense>
+  );
 }

@@ -147,11 +147,12 @@ export default function AnleitungPage() {
         <TrackedLink href="/erstellen" event="create_click">
           Angebot erstellen
         </TrackedLink>{" "}
-        tragen Sie Absender, Auftraggeber und Positionen ein. Währung EUR oder CHF, MwSt.
-        frei oder über die DE/CH/AT-Vorgaben, optional Rabatt und Logo. Das PDF entsteht im
-        Browser. Kostenlos trägt es das Wasserzeichen „Offertly — Demo“; 30 Tage ohne
+        wählen Sie eine Vorlage (IT-Stunden, Handwerk, Beratung) oder schreiben frei.
+        Absender, Auftraggeber und Positionen; Währung EUR oder CHF; MwSt. frei oder über
+        die DE/CH/AT-Vorgaben; optional Rabatt und Logo. Das PDF entsteht im Browser.
+        Kostenlos trägt es das Wasserzeichen „Offertly — Demo“; 30 Tage ohne
         Kennzeichnung gibt es unter{" "}
-        <Link href="/entsperren">Entsperren</Link> für 9 €.
+        <Link href="/entsperren">Entsperren</Link> für 9 € (SOL oder USDC auf Solana).
       </p>
 
       <h2>Häufige Fragen</h2>

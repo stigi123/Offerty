@@ -52,7 +52,7 @@ export function UnlockForm({
       );
       setTxHash("");
     } catch {
-      setError("Bitte einen Transaktionshash einfügen.");
+      setError("Bitte die Solana-Transaktionssignatur einfügen.");
     }
   }
 
@@ -77,20 +77,43 @@ export function UnlockForm({
         </p>
       ) : null}
 
-      <h2>Zahlung per Krypto</h2>
+      <div className="pay-box">
+        <div>
+          <p className="kicker">Zu zahlen</p>
+          <p className="price">{UNLOCK_PRICE_EUR} €</p>
+          <p className="muted">
+            Gegenwert in <strong>SOL</strong> oder <strong>USDC</strong> auf Solana.
+            USDC liegt üblicherweise nahe 9–10 USDC; bei SOL den Euro-Betrag in Phantom
+            zum Versandzeitpunkt prüfen.
+          </p>
+        </div>
+      </div>
+
+      <h2>Zahlung mit Phantom auf Solana</h2>
       <ol>
         <li>
-          Senden Sie den Gegenwert von <strong>{UNLOCK_PRICE_EUR} €</strong> (ETH, USDC oder
-          BTC) an die unten stehende Adresse.
+          Öffnen Sie <strong>Phantom</strong> (oder eine andere Solana-Wallet) und wählen Sie
+          das Netzwerk <strong>Solana</strong> — nicht Ethereum, nicht Bitcoin.
         </li>
-        <li>Warten Sie auf die Bestätigung im jeweiligen Netzwerk.</li>
         <li>
-          Fügen Sie den Transaktionshash ein. In Version 1 genügt jeder nicht-leere Hash —
-          eine On-Chain-Prüfung findet nicht statt.
+          Senden Sie den Gegenwert von <strong>{UNLOCK_PRICE_EUR} €</strong> in{" "}
+          <strong>SOL</strong> oder <strong>USDC (Solana)</strong> an die Empfangsadresse
+          unten.
+        </li>
+        <li>Warten Sie auf die Bestätigung im Solana-Netzwerk.</li>
+        <li>
+          Kopieren Sie die Transaktionssignatur aus Phantom (Transaktionsdetails) und fügen
+          Sie sie hier ein, um die 30 Tage freizuschalten.
         </li>
       </ol>
 
-      <p className="muted">Empfangsadresse</p>
+      <p className="alert alert-warn">
+        <strong>Nur Solana.</strong> Diese Adresse nimmt kein ETH, kein BTC und kein USDC
+        auf Ethereum entgegen. Überweisungen auf einem anderen Netz kommen nicht an und
+        können nicht gutgeschrieben werden.
+      </p>
+
+      <p className="muted">Solana-Empfangsadresse</p>
       <div className="copy-row">
         <p className="wallet-box">{walletAddress}</p>
         <button type="button" className="btn btn-brass" onClick={() => void copyAddress()}>
@@ -100,15 +123,18 @@ export function UnlockForm({
 
       <form onSubmit={onSubmit}>
         <label className="field">
-          Transaktionshash
+          Transaktionssignatur
           <input
             value={txHash}
             onChange={(e) => setTxHash(e.target.value)}
-            placeholder="0x… oder beliebiger Tx-Hash"
+            placeholder="Solana-Signatur aus Phantom"
             autoComplete="off"
             spellCheck={false}
           />
         </label>
+        <p className="muted">
+          Die Signatur steht in Phantom nach der Überweisung unter den Transaktionsdetails.
+        </p>
         {error ? <p className="alert alert-warn">{error}</p> : null}
         {status ? <p className="alert">{status}</p> : null}
         <div className="actions" style={{ marginTop: 16 }}>
