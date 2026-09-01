@@ -11,6 +11,31 @@ import {
   unlockWithTxHash,
 } from "@/lib/unlock";
 
+async function copyText(value: string): Promise<boolean> {
+  try {
+    await navigator.clipboard.writeText(value);
+    return true;
+  } catch {
+    try {
+      const field = document.createElement("textarea");
+      field.value = value;
+      field.setAttribute("readonly", "");
+      field.style.position = "fixed";
+      field.style.top = "0";
+      field.style.left = "0";
+      field.style.opacity = "0";
+      document.body.appendChild(field);
+      field.focus();
+      field.select();
+      const ok = document.execCommand("copy");
+      document.body.removeChild(field);
+      return ok;
+    } catch {
+      return false;
+    }
+  }
+}
+
 export function UnlockForm({
   walletAddress,
   isPlaceholder,
@@ -30,13 +55,15 @@ export function UnlockForm({
   }, []);
 
   async function copyAddress() {
-    try {
-      await navigator.clipboard.writeText(walletAddress);
+    const ok = await copyText(walletAddress);
+    if (ok) {
       setCopied(true);
+      setError(null);
       window.setTimeout(() => setCopied(false), 2000);
-    } catch {
-      setCopied(false);
+      return;
     }
+    setCopied(false);
+    setError("Adresse konnte nicht kopiert werden. Bitte die Adresse markieren und kopieren.");
   }
 
   function onSubmit(event: FormEvent) {
@@ -78,40 +105,14 @@ export function UnlockForm({
       ) : null}
 
       <div className="pay-box">
-        <div>
-          <p className="kicker">Zu zahlen</p>
-          <p className="price">{UNLOCK_PRICE_EUR} €</p>
-          <p className="muted">
-            Gegenwert in <strong>SOL</strong> oder <strong>USDC</strong> auf Solana.
-            USDC liegt üblicherweise nahe 9–10 USDC; bei SOL den Euro-Betrag in Phantom
-            zum Versandzeitpunkt prüfen.
-          </p>
-        </div>
+        <p className="kicker">Zu zahlen</p>
+        <p className="price">{UNLOCK_PRICE_EUR} €</p>
+        <p className="muted">
+          Gegenwert in <strong>SOL</strong> oder <strong>USDC</strong> auf Solana.
+          USDC liegt üblicherweise nahe 9–10 USDC; bei SOL den Euro-Betrag in Phantom
+          zum Versandzeitpunkt prüfen.
+        </p>
       </div>
-
-      <h2>Zahlung mit Phantom auf Solana</h2>
-      <ol>
-        <li>
-          Öffnen Sie <strong>Phantom</strong> (oder eine andere Solana-Wallet) und wählen Sie
-          das Netzwerk <strong>Solana</strong> — nicht Ethereum, nicht Bitcoin.
-        </li>
-        <li>
-          Senden Sie den Gegenwert von <strong>{UNLOCK_PRICE_EUR} €</strong> in{" "}
-          <strong>SOL</strong> oder <strong>USDC (Solana)</strong> an die Empfangsadresse
-          unten.
-        </li>
-        <li>Warten Sie auf die Bestätigung im Solana-Netzwerk.</li>
-        <li>
-          Kopieren Sie die Transaktionssignatur aus Phantom (Transaktionsdetails) und fügen
-          Sie sie hier ein, um die 30 Tage freizuschalten.
-        </li>
-      </ol>
-
-      <p className="alert alert-warn">
-        <strong>Nur Solana.</strong> Diese Adresse nimmt kein ETH, kein BTC und kein USDC
-        auf Ethereum entgegen. Überweisungen auf einem anderen Netz kommen nicht an und
-        können nicht gutgeschrieben werden.
-      </p>
 
       <p className="muted">Solana-Empfangsadresse</p>
       <div className="copy-row">
@@ -120,6 +121,28 @@ export function UnlockForm({
           {copied ? "Kopiert" : "Kopieren"}
         </button>
       </div>
+
+      <p className="alert alert-warn">
+        <strong>Nur Solana.</strong> Senden Sie SOL oder USDC in Phantom auf dem
+        Solana-Netzwerk. ETH, BTC oder USDC auf Ethereum erreichen diese Adresse nicht
+        und können nicht gutgeschrieben werden.
+      </p>
+
+      <h2>Zahlung mit Phantom</h2>
+      <ol>
+        <li>
+          Öffnen Sie Phantom und wählen Sie das Netzwerk <strong>Solana</strong>.
+        </li>
+        <li>
+          Senden Sie den Gegenwert von <strong>{UNLOCK_PRICE_EUR} €</strong> in{" "}
+          <strong>SOL</strong> oder <strong>USDC (Solana)</strong> an die Adresse oben.
+        </li>
+        <li>Warten Sie auf die Bestätigung im Solana-Netzwerk.</li>
+        <li>
+          Kopieren Sie die Transaktionssignatur aus den Phantom-Transaktionsdetails und
+          fügen Sie sie unten ein.
+        </li>
+      </ol>
 
       <form onSubmit={onSubmit}>
         <label className="field">

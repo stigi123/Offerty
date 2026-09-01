@@ -170,6 +170,7 @@ export function QuoteForm() {
   const [error, setError] = useState<string | null>(null);
   const [unlocked, setUnlocked] = useState(false);
   const [unlockLabel, setUnlockLabel] = useState<string | null>(null);
+  const [activeTemplate, setActiveTemplate] = useState<string | null>(null);
   const logoInput = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -177,11 +178,15 @@ export function QuoteForm() {
     const draft = loadDraft();
     if (fromQuery) {
       setQuote(fromQuery.build());
+      setActiveTemplate(fromQuery.id);
       setMessage(`${fromQuery.label} geladen. Namen und Beträge anpassen, dann PDF laden.`);
       router.replace("/erstellen", { scroll: false });
+    } else if (draft) {
+      setQuote(draft);
     } else {
       const fallback = getStarterTemplate(DEFAULT_STARTER_ID) ?? STARTER_TEMPLATES[0];
-      setQuote(draft ?? fallback.build());
+      setQuote(fallback.build());
+      setActiveTemplate(fallback.id);
     }
     const record = loadUnlock();
     setUnlocked(Boolean(record));
@@ -306,10 +311,12 @@ export function QuoteForm() {
             <button
               key={template.id}
               type="button"
-              className="btn btn-brass"
+              className={`btn btn-brass${activeTemplate === template.id ? " active" : ""}`}
               title={template.blurb}
+              aria-pressed={activeTemplate === template.id}
               onClick={() => {
                 setQuote(template.build());
+                setActiveTemplate(template.id);
                 setMessage(`${template.label} geladen. Namen und Beträge anpassen.`);
                 setError(null);
               }}
@@ -323,6 +330,7 @@ export function QuoteForm() {
             onClick={() => {
               clearDraft();
               setQuote(emptyQuote());
+              setActiveTemplate(null);
               setMessage("Entwurf gelöscht.");
               setError(null);
             }}

@@ -379,6 +379,13 @@ textarea {
   margin: 0 0 18px;
 }
 
+.template-bar .btn-brass.active,
+.template-bar .btn-brass[aria-pressed="true"] {
+  background: var(--pine);
+  color: var(--paper);
+  border-color: var(--pine);
+}
+
 .kicker {
   font-family: var(--font-sans), sans-serif;
   font-size: 0.75rem;
@@ -454,7 +461,9 @@ h2 {
   border-color: var(--brass);
 }
 
-.btn-brass:hover {
+.btn-brass:hover,
+.btn-brass.active,
+.btn-brass[aria-pressed="true"] {
   background: rgba(184, 149, 74, 0.12);
   color: var(--pine-deep);
 }
