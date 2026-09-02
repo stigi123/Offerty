@@ -28,14 +28,22 @@ export default function DatenschutzPage() {
           Das PDF wird <strong>im Browser</strong> mit @react-pdf/renderer erzeugt.
         </li>
         <li>
-          Der Freischaltstatus (Transaktionshash, Ablaufdatum) liegt ebenfalls nur lokal.
-          Version 1 prüft Hashes nicht on-chain.
+          Der Freischaltstatus (Zahlungsreferenz, Ablaufdatum) liegt ebenfalls nur lokal.
+          Version 1 prüft Zahlungen nicht automatisch.
         </li>
         <li>
-          Die Empfangsadresse für optionale Zahlungen stammt aus der Server-Umgebungsvariable{" "}
-          <code>WALLET_ADDRESS</code>.
+          Die Empfangsadresse für optionale Solana-Zahlungen stammt aus der
+          Server-Umgebungsvariable <code>WALLET_ADDRESS</code>.
         </li>
       </ul>
+      <h2>Zahlungsdienstleister</h2>
+      <p>
+        Für die optionale Freischaltung kann <strong>PayPal</strong> (PayPal (Europe)
+        S.à r.l. et Cie, S.C.A.) als Zahlungsdienstleister genutzt werden. Beim Klick auf
+        „Mit PayPal zahlen“ verlassen Sie diese Website; PayPal verarbeitet dann die für
+        die Zahlung nötigen Daten nach eigener Datenschutzerklärung. Eine alternative
+        Zahlung in SOL oder USDC auf Solana bleibt möglich.
+      </p>
       <h2>Hosting</h2>
       <p>
         Die Website wird bei Vercel gehostet. Beim Aufruf verarbeitet Vercel übliche
@@ -44,9 +52,10 @@ export default function DatenschutzPage() {
       <h2>Reichweitenmessung</h2>
       <p>
         Wir nutzen Vercel Web Analytics. Erfasst werden Seitenaufrufe sowie die
-        Ereignisse create_click, pdf_download, unlock_click und unlock_submit
-        (Klicks zum Formular bzw. zur Freischaltung, PDF-Download, Absenden eines
-        Transaktionshash). Es werden keine Angebotsinhalte, Namen, Beträge,
+        Ereignisse create_click, pdf_download, unlock_click, unlock_submit,
+        buy_app_click und paypal_click (Klicks zum Formular bzw. zur Freischaltung,
+        PDF-Download, Absenden einer Zahlungsreferenz, Klick auf den Komplettkauf,
+        Klick auf PayPal). Es werden keine Angebotsinhalte, Namen, Beträge,
         Wallet-Adressen oder Hashes als Ereigniseigenschaften gesendet. Es gibt
         keine Werbe-Cookies und keine Nutzerkonten. Ein Cookie-Banner ist dafür
         nicht vorgesehen.

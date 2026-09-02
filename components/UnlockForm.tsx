@@ -1,9 +1,11 @@
 "use client";
 
 import { FormEvent, useEffect, useState } from "react";
-import { TrackedLink } from "@/components/TrackedLink";
+import { BuyAppCta } from "@/components/BuyAppCta";
+import { TrackedAnchor, TrackedLink } from "@/components/TrackedLink";
 import { trackEvent } from "@/lib/analytics";
 import {
+  PAYPAL_ME_URL,
   UNLOCK_DAYS,
   UNLOCK_PRICE_EUR,
   loadUnlock,
@@ -79,7 +81,7 @@ export function UnlockForm({
       );
       setTxHash("");
     } catch {
-      setError("Bitte die Solana-Transaktionssignatur einfügen.");
+      setError("Bitte die Zahlungsreferenz oder Transaktionssignatur einfügen.");
     }
   }
 
@@ -96,79 +98,100 @@ export function UnlockForm({
         <p className="alert">Aktive Freischaltung: {active}.</p>
       ) : null}
 
-      {isPlaceholder ? (
-        <p className="alert alert-warn">
-          <strong>Keine echte Empfangsadresse.</strong> Die Umgebungsvariable{" "}
-          <code>WALLET_ADDRESS</code> ist nicht gesetzt. Die folgende Adresse ist ein
-          sichtbarer Platzhalter — bitte nichts überweisen.
-        </p>
-      ) : null}
-
       <div className="pay-box">
         <p className="kicker">Zu zahlen</p>
         <p className="price">{UNLOCK_PRICE_EUR} €</p>
         <p className="muted">
-          Gegenwert in <strong>SOL</strong> oder <strong>USDC</strong> auf Solana.
-          USDC liegt üblicherweise nahe 9–10 USDC; bei SOL den Euro-Betrag in Phantom
-          zum Versandzeitpunkt prüfen.
+          Bevorzugt per <strong>PayPal</strong> (9 EUR). Solana (SOL oder USDC) bleibt
+          optional darunter.
         </p>
       </div>
 
-      <p className="muted">Solana-Empfangsadresse</p>
-      <div className="copy-row">
-        <p className="wallet-box">{walletAddress}</p>
-        <button type="button" className="btn btn-brass" onClick={() => void copyAddress()}>
-          {copied ? "Kopiert" : "Kopieren"}
-        </button>
+      <div className="actions" style={{ marginBottom: 22 }}>
+        <TrackedAnchor
+          className="btn"
+          href={PAYPAL_ME_URL}
+          event="paypal_click"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Mit PayPal zahlen ({UNLOCK_PRICE_EUR} €)
+        </TrackedAnchor>
       </div>
 
-      <p className="alert alert-warn">
-        <strong>Nur Solana.</strong> Senden Sie SOL oder USDC in Phantom auf dem
-        Solana-Netzwerk. ETH, BTC oder USDC auf Ethereum erreichen diese Adresse nicht
-        und können nicht gutgeschrieben werden.
+      <h2>Ich habe bezahlt</h2>
+      <p className="muted">
+        Nach der Zahlung die PayPal-Referenz oder eine Solana-Signatur eintragen. Version 1
+        speichert die Freischaltung nur in diesem Browser und prüft die Zahlung nicht
+        automatisch.
       </p>
-
-      <h2>Zahlung mit Phantom</h2>
-      <ol>
-        <li>
-          Öffnen Sie Phantom und wählen Sie das Netzwerk <strong>Solana</strong>.
-        </li>
-        <li>
-          Senden Sie den Gegenwert von <strong>{UNLOCK_PRICE_EUR} €</strong> in{" "}
-          <strong>SOL</strong> oder <strong>USDC (Solana)</strong> an die Adresse oben.
-        </li>
-        <li>Warten Sie auf die Bestätigung im Solana-Netzwerk.</li>
-        <li>
-          Kopieren Sie die Transaktionssignatur aus den Phantom-Transaktionsdetails und
-          fügen Sie sie unten ein.
-        </li>
-      </ol>
 
       <form onSubmit={onSubmit}>
         <label className="field">
-          Transaktionssignatur
+          Zahlungsreferenz
           <input
             value={txHash}
             onChange={(e) => setTxHash(e.target.value)}
-            placeholder="Solana-Signatur aus Phantom"
+            placeholder="PayPal-Referenz oder Solana-Signatur"
             autoComplete="off"
             spellCheck={false}
           />
         </label>
-        <p className="muted">
-          Die Signatur steht in Phantom nach der Überweisung unter den Transaktionsdetails.
-        </p>
         {error ? <p className="alert alert-warn">{error}</p> : null}
         {status ? <p className="alert">{status}</p> : null}
         <div className="actions" style={{ marginTop: 16 }}>
           <button className="btn" type="submit">
-            Freischalten
+            Ich habe bezahlt
           </button>
           <TrackedLink className="btn btn-brass" href="/erstellen" event="create_click">
             Zum Angebot
           </TrackedLink>
         </div>
       </form>
+
+      <details className="unlock-alt">
+        <summary>Stattdessen mit Solana (Phantom) zahlen</summary>
+
+        {isPlaceholder ? (
+          <p className="alert alert-warn">
+            <strong>Keine echte Empfangsadresse.</strong> Die Umgebungsvariable{" "}
+            <code>WALLET_ADDRESS</code> ist nicht gesetzt. Die folgende Adresse ist ein
+            sichtbarer Platzhalter — bitte nichts überweisen.
+          </p>
+        ) : null}
+
+        <p className="muted">Solana-Empfangsadresse</p>
+        <div className="copy-row">
+          <p className="wallet-box">{walletAddress}</p>
+          <button type="button" className="btn btn-brass" onClick={() => void copyAddress()}>
+            {copied ? "Kopiert" : "Kopieren"}
+          </button>
+        </div>
+
+        <p className="alert alert-warn">
+          <strong>Nur Solana.</strong> Senden Sie SOL oder USDC in Phantom auf dem
+          Solana-Netzwerk. ETH, BTC oder USDC auf Ethereum erreichen diese Adresse nicht
+          und können nicht gutgeschrieben werden.
+        </p>
+
+        <h3>Zahlung mit Phantom</h3>
+        <ol>
+          <li>
+            Öffnen Sie Phantom und wählen Sie das Netzwerk <strong>Solana</strong>.
+          </li>
+          <li>
+            Senden Sie den Gegenwert von <strong>{UNLOCK_PRICE_EUR} €</strong> in{" "}
+            <strong>SOL</strong> oder <strong>USDC (Solana)</strong> an die Adresse oben.
+          </li>
+          <li>Warten Sie auf die Bestätigung im Solana-Netzwerk.</li>
+          <li>
+            Kopieren Sie die Transaktionssignatur aus den Phantom-Transaktionsdetails und
+            fügen Sie sie oben unter „Ich habe bezahlt“ ein.
+          </li>
+        </ol>
+      </details>
+
+      <BuyAppCta variant="compact" />
     </section>
   );
 }

@@ -24,8 +24,8 @@ export default function ImpressumPage() {
       </p>
       <p className="muted">
         Offertly ist ein Angebot-/Offertengenerator. PDFs werden im Browser erzeugt. Eine
-        Freischaltung über Krypto ist optional und an die Umgebungsvariable{" "}
-        <code>WALLET_ADDRESS</code> gebunden.
+        Freischaltung ist optional (PayPal oder Krypto); die Solana-Adresse stammt aus{" "}
+        <code>WALLET_ADDRESS</code>.
       </p>
     </article>
   );
