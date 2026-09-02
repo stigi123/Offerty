@@ -1,6 +1,7 @@
 "use client";
 
 import { FormEvent, useEffect, useState } from "react";
+import { BuyAppCta } from "@/components/BuyAppCta";
 import { TrackedLink } from "@/components/TrackedLink";
 import { trackEvent } from "@/lib/analytics";
 import {
@@ -127,6 +128,7 @@ export function UnlockForm({
         Solana-Netzwerk. ETH, BTC oder USDC auf Ethereum erreichen diese Adresse nicht
         und können nicht gutgeschrieben werden.
       </p>
+      <p className="muted">Ein Unlock per PayPal folgt. Derzeit nur SOL oder USDC auf Solana.</p>
 
       <h2>Zahlung mit Phantom</h2>
       <ol>
@@ -169,6 +171,8 @@ export function UnlockForm({
           </TrackedLink>
         </div>
       </form>
+
+      <BuyAppCta variant="compact" />
     </section>
   );
 }

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { BuyAppCta } from "@/components/BuyAppCta";
 import { SampleOfferPreview } from "@/components/SampleOfferPreview";
 import { TrackedLink } from "@/components/TrackedLink";
 import { openGraphFor, SITE_NAME, SITE_URL } from "@/lib/seo";
@@ -65,6 +66,9 @@ export default function HomePage() {
             <TrackedLink className="btn" href="/erstellen" event="create_click">
               Angebot erstellen
             </TrackedLink>
+            <a className="btn btn-brass" href="#komplettkauf">
+              Produkt kaufen
+            </a>
           </div>
         </div>
         <SampleOfferPreview />
@@ -114,6 +118,11 @@ export default function HomePage() {
           <TrackedLink className="btn" href="/entsperren" event="unlock_click">
             Zur Freischaltung
           </TrackedLink>
+          <p className="muted" style={{ marginTop: 14 }}>
+            Nur Freischaltung. Das komplette Produkt (Quelle + Vercel-App) steht
+            unter{" "}
+            <a href="#komplettkauf">Komplettkauf</a>.
+          </p>
         </section>
         <section className="sheet pad">
           <p className="kicker">Was enthalten ist</p>
@@ -126,6 +135,8 @@ export default function HomePage() {
           </ul>
         </section>
       </div>
+
+      <BuyAppCta variant="full" />
 
       <section className="sheet pad" style={{ marginTop: 24 }}>
         <p className="kicker">Anleitung</p>

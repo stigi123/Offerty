@@ -437,6 +437,25 @@ textarea {
   margin: 0 0 6px;
 }
 
+.sale-box {
+  border: 1px solid var(--pine);
+  background: var(--pine-mist);
+  padding: 16px 18px;
+  margin: 24px 0 0;
+}
+
+.sale-box .kicker {
+  margin-bottom: 8px;
+}
+
+.sale-box p {
+  margin: 0;
+}
+
+#komplettkauf {
+  scroll-margin-top: 24px;
+}
+
 .template-bar {
   display: flex;
   flex-wrap: wrap;

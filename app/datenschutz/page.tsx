@@ -44,12 +44,12 @@ export default function DatenschutzPage() {
       <h2>Reichweitenmessung</h2>
       <p>
         Wir nutzen Vercel Web Analytics. Erfasst werden Seitenaufrufe sowie die
-        Ereignisse create_click, pdf_download, unlock_click und unlock_submit
-        (Klicks zum Formular bzw. zur Freischaltung, PDF-Download, Absenden eines
-        Transaktionshash). Es werden keine Angebotsinhalte, Namen, Beträge,
-        Wallet-Adressen oder Hashes als Ereigniseigenschaften gesendet. Es gibt
-        keine Werbe-Cookies und keine Nutzerkonten. Ein Cookie-Banner ist dafür
-        nicht vorgesehen.
+        Ereignisse create_click, pdf_download, unlock_click, unlock_submit und
+        buy_app_click (Klicks zum Formular bzw. zur Freischaltung, PDF-Download,
+        Absenden eines Transaktionshash, Klick auf den Komplettkauf). Es werden
+        keine Angebotsinhalte, Namen, Beträge, Wallet-Adressen oder Hashes als
+        Ereigniseigenschaften gesendet. Es gibt keine Werbe-Cookies und keine
+        Nutzerkonten. Ein Cookie-Banner ist dafür nicht vorgesehen.
       </p>
       <h2>Rechte</h2>
       <p>
