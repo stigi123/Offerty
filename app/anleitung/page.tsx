@@ -152,7 +152,7 @@ export default function AnleitungPage() {
         die DE/CH/AT-Vorgaben; optional Rabatt und Logo. Das PDF entsteht im Browser.
         Kostenlos trägt es das Wasserzeichen „Offertly — Demo“; 30 Tage ohne
         Kennzeichnung gibt es unter{" "}
-        <Link href="/entsperren">Entsperren</Link> für 9 € (SOL oder USDC auf Solana).
+        <Link href="/entsperren">Entsperren</Link> für 9 € (PayPal, optional Solana).
       </p>
 
       <h2>Häufige Fragen</h2>

@@ -456,6 +456,33 @@ textarea {
   scroll-margin-top: 24px;
 }
 
+.unlock-alt {
+  margin-top: 28px;
+  padding-top: 18px;
+  border-top: 1px solid var(--rule);
+}
+
+.unlock-alt summary {
+  cursor: pointer;
+  font-family: var(--font-sans), sans-serif;
+  font-size: 1.02rem;
+  color: var(--pine-deep);
+  list-style-position: outside;
+  margin-bottom: 14px;
+}
+
+.unlock-alt summary:hover {
+  color: var(--brass-deep);
+}
+
+.unlock-alt[open] summary {
+  margin-bottom: 16px;
+}
+
+.unlock-alt h3 {
+  margin-top: 8px;
+}
+
 .template-bar {
   display: flex;
   flex-wrap: wrap;

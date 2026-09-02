@@ -2,6 +2,9 @@ export const UNLOCK_KEY = "offertly.unlock.v1";
 export const UNLOCK_PRICE_EUR = 9;
 export const UNLOCK_DAYS = 30;
 
+/** Official PayPal.Me amount+currency: paypal.me/{name}/{amount}{ISO}. */
+export const PAYPAL_ME_URL = "https://paypal.me/NathanStieger/9EUR";
+
 /** Klar als unecht erkennbar, falls WALLET_ADDRESS nicht gesetzt ist. */
 export const FAKE_WALLET_PLACEHOLDER =
   "SOL-DEMO-OFFERTLY-KEINE-ECHTE-WALLET — Platzhalter, nicht überweisen";

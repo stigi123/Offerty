@@ -60,7 +60,7 @@ export default function HomePage() {
           </p>
           <p className="price-line">
             <strong>9 € / 30 Tage</strong>
-            <span>sonst Wasserzeichen „Offertly — Demo“</span>
+            <span>PayPal · sonst Wasserzeichen „Offertly — Demo“</span>
           </p>
           <div className="actions">
             <TrackedLink className="btn" href="/erstellen" event="create_click">
@@ -110,11 +110,11 @@ export default function HomePage() {
           <p>
             Jedes PDF ohne Freischaltung trägt das Wasserzeichen{" "}
             <strong>Offertly — Demo</strong>. Für 9 € schalten Sie 30 Tage
-            unbegrenzte PDFs ohne Kennzeichnung frei — Zahlung in SOL oder USDC auf
-            Solana, ohne Benutzerkonto.
+            unbegrenzte PDFs ohne Kennzeichnung frei — Zahlung per PayPal, optional
+            SOL oder USDC auf Solana. Kein Benutzerkonto.
           </p>
           <p className="price">9 €</p>
-          <p className="muted">pro 30 Tage · Solana (Phantom)</p>
+          <p className="muted">pro 30 Tage · PayPal (9 €)</p>
           <TrackedLink className="btn" href="/entsperren" event="unlock_click">
             Zur Freischaltung
           </TrackedLink>

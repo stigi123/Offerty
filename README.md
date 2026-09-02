@@ -10,7 +10,7 @@ Das GitHub-Repository heißt weiterhin **Offerty**. Das Produkt heißt **Offertl
 - Drei Startvorlagen (IT-Stunden, Handwerk, Beratung); Entwurf in `localStorage`
 - PDF im **Browser** mit [`@react-pdf/renderer`](https://react-pdf.org/) (A4)
 - Kostenlose PDFs mit Wasserzeichen **Offertly — Demo**
-- Freischaltung **9 € / 30 Tage** unter `/entsperren`: Zahlung in **SOL oder USDC auf Solana** (Phantom), Empfangsadresse aus `WALLET_ADDRESS`
+- Freischaltung **9 € / 30 Tage** unter `/entsperren`: Zahlung per **PayPal** (`paypal.me/NathanStieger/9EUR`), optional **SOL oder USDC auf Solana** (Phantom), Empfangsadresse aus `WALLET_ADDRESS`
 - Ist `WALLET_ADDRESS` leer, erscheint ein **klar als Fake gekennzeichneter Platzhalter**
 - Komplettkauf (Quelle + Vercel-App) für **49–79 USD** über die Startseite und `/entsperren` — Kontakt `nathan.stieger2004@gmail.com`, kein Checkout
 - `/impressum` und `/datenschutz` mit den hinterlegten Betreiberangaben — keine erfundenen E-Mails oder USt-IdNr.
