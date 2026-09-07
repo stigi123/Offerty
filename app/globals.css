@@ -192,6 +192,14 @@ textarea {
   gap: 28px;
 }
 
+.sale-line {
+  margin: 0 0 10px;
+  font-family: var(--font-sans), sans-serif;
+  font-size: 1.02rem;
+  font-weight: 650;
+  color: var(--pine-deep);
+}
+
 .price-line {
   display: flex;
   flex-wrap: wrap;

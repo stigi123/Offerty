@@ -3,6 +3,7 @@ import Link from "next/link";
 import { BuyAppCta } from "@/components/BuyAppCta";
 import { SampleOfferPreview } from "@/components/SampleOfferPreview";
 import { TrackedLink } from "@/components/TrackedLink";
+import { SALE_PRICE_USD } from "@/lib/sale";
 import { openGraphFor, SITE_NAME, SITE_URL } from "@/lib/seo";
 
 const title = "Angebot erstellen als PDF | Offertly für Freelancer (DE/CH/AT)";
@@ -53,6 +54,7 @@ export default function HomePage() {
       <section className="sheet hero hero-sample">
         <div>
           <p className="kicker">Für Freelancer in DE · CH · AT</p>
+          <p className="sale-line">App zu verkaufen / for sale {SALE_PRICE_USD}.</p>
           <h1>Die Offerte, die sitzt.</h1>
           <p className="lede">
             Angaben eintragen, A4-PDF laden. Kein Konto — das Dokument entsteht in Ihrem
@@ -67,7 +69,7 @@ export default function HomePage() {
               Angebot erstellen
             </TrackedLink>
             <a className="btn btn-brass" href="#komplettkauf">
-              Produkt kaufen
+              App kaufen — {SALE_PRICE_USD}
             </a>
           </div>
         </div>
