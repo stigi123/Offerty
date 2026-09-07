@@ -36,7 +36,7 @@ export function BuyAppCta({ variant }: { variant: "full" | "compact" }) {
       </p>
       <div className="actions" style={{ marginTop: 18 }}>
         <TrackedAnchor className="btn" href={SALE_MAILTO} event="buy_app_click">
-          Offertly kaufen
+          Offertly kaufen — {SALE_PRICE_USD}
         </TrackedAnchor>
       </div>
       <p className="muted" style={{ marginTop: 12 }}>
