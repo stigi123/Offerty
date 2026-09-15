@@ -38,11 +38,13 @@ export default function DatenschutzPage() {
       </ul>
       <h2>Zahlungsdienstleister</h2>
       <p>
-        Für die optionale Freischaltung kann <strong>PayPal</strong> (PayPal (Europe)
-        S.à r.l. et Cie, S.C.A.) als Zahlungsdienstleister genutzt werden. Beim Klick auf
-        „Mit PayPal zahlen“ verlassen Sie diese Website; PayPal verarbeitet dann die für
-        die Zahlung nötigen Daten nach eigener Datenschutzerklärung. Eine alternative
-        Zahlung in SOL oder USDC auf Solana bleibt möglich.
+        Für die optionale Freischaltung und den optionalen Komplettkauf kann{" "}
+        <strong>PayPal</strong> (PayPal (Europe) S.à r.l. et Cie, S.C.A.) als
+        Zahlungsdienstleister genutzt werden. Beim Klick auf „Mit PayPal zahlen“ oder
+        „Mit PayPal kaufen“ verlassen Sie diese Website; PayPal verarbeitet dann die
+        für die Zahlung nötigen Daten nach eigener Datenschutzerklärung. Für die
+        Freischaltung bleibt eine alternative Zahlung in SOL oder USDC auf Solana
+        möglich.
       </p>
       <h2>Hosting</h2>
       <p>
@@ -53,9 +55,10 @@ export default function DatenschutzPage() {
       <p>
         Wir nutzen Vercel Web Analytics. Erfasst werden Seitenaufrufe sowie die
         Ereignisse create_click, pdf_download, unlock_click, unlock_submit,
-        buy_app_click und paypal_click (Klicks zum Formular bzw. zur Freischaltung,
-        PDF-Download, Absenden einer Zahlungsreferenz, Klick auf den Komplettkauf,
-        Klick auf PayPal). Es werden keine Angebotsinhalte, Namen, Beträge,
+        buy_app_click, buy_app_paypal_click und paypal_click (Klicks zum Formular
+        bzw. zur Freischaltung, PDF-Download, Absenden einer Zahlungsreferenz,
+        Klick auf den Komplettkauf per E-Mail bzw. PayPal, Klick auf PayPal zur
+        Freischaltung). Es werden keine Angebotsinhalte, Namen, Beträge,
         Wallet-Adressen oder Hashes als Ereigniseigenschaften gesendet. Es gibt
         keine Werbe-Cookies und keine Nutzerkonten. Ein Cookie-Banner ist dafür
         nicht vorgesehen.

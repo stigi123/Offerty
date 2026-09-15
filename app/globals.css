@@ -460,6 +460,10 @@ textarea {
   margin: 0;
 }
 
+.sale-box .actions {
+  margin-top: 14px;
+}
+
 #komplettkauf {
   scroll-margin-top: 24px;
 }
