@@ -6,6 +6,7 @@ export type OffertlyEvent =
   | "unlock_click"
   | "unlock_submit"
   | "buy_app_click"
+  | "buy_app_paypal_click"
   | "paypal_click";
 
 /** Fire a named event with no properties (no offer data, wallets, or hashes). */
