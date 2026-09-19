@@ -12,7 +12,7 @@ Das GitHub-Repository heißt weiterhin **Offerty**. Das Produkt heißt **Offertl
 - Kostenlose PDFs mit Wasserzeichen **Offertly — Demo**
 - Freischaltung **9 € / 30 Tage** unter `/entsperren`: Zahlung per **PayPal** (`paypal.me/NathanStieger/9EUR`), optional **SOL oder USDC auf Solana** (Phantom), Empfangsadresse aus `WALLET_ADDRESS`
 - Ist `WALLET_ADDRESS` leer, erscheint ein **klar als Fake gekennzeichneter Platzhalter**
-- Komplettkauf (Quelle + Vercel-App) für **20 USD** (ca. 17–18 EUR) über die Startseite und `/entsperren` — PayPal.Me (`paypal.me/NathanStieger/20USD`), Kontakt `nathan.stieger2004@gmail.com`
+- Komplettkauf-Paket (Quelle + Vercel-App für **Offertly** und **Rechnungly**) für **20 USD** (ca. 17–18 EUR) über die Startseite und `/entsperren` — eine PayPal.Me-Zahlung (`paypal.me/NathanStieger/20USD`) gilt für beide Apps, Kontakt `nathan.stieger2004@gmail.com`
 - `/impressum` und `/datenschutz` mit den hinterlegten Betreiberangaben — keine erfundenen E-Mails oder USt-IdNr.
 
 ## Entwicklung

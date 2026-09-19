@@ -54,7 +54,9 @@ export default function HomePage() {
       <section className="sheet hero hero-sample">
         <div>
           <p className="kicker">Für Freelancer in DE · CH · AT</p>
-          <p className="sale-line">App zu verkaufen / for sale {SALE_PRICE_USD}.</p>
+          <p className="sale-line">
+            Beide Apps zu verkaufen / for sale {SALE_PRICE_USD} — Offertly + Rechnungly.
+          </p>
           <h1>Die Offerte, die sitzt.</h1>
           <p className="lede">
             Angaben eintragen, A4-PDF laden. Kein Konto — das Dokument entsteht in Ihrem
@@ -69,7 +71,7 @@ export default function HomePage() {
               Angebot erstellen
             </TrackedLink>
             <a className="btn btn-brass" href="#komplettkauf">
-              App kaufen — {SALE_PRICE_USD}
+              Beide Apps kaufen — {SALE_PRICE_USD}
             </a>
           </div>
         </div>
@@ -121,9 +123,9 @@ export default function HomePage() {
             Zur Freischaltung
           </TrackedLink>
           <p className="muted" style={{ marginTop: 14 }}>
-            Nur Freischaltung. Das komplette Produkt (Quelle + Vercel-App) steht
-            unter{" "}
-            <a href="#komplettkauf">Komplettkauf</a>.
+            Nur Freischaltung (Offertly). Quelle + Vercel für Offertly und
+            Rechnungly steht unter{" "}
+            <a href="#komplettkauf">Komplettkauf</a> — eine Zahlung, {SALE_PRICE_USD}.
           </p>
         </section>
         <section className="sheet pad">
